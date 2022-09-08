@@ -161,16 +161,23 @@ public class PanelPrincipal extends javax.swing.JFrame {
         jPanel14 = new javax.swing.JPanel();
         jLabel55 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtableConsultaSQL = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel56 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtFiltrarIDConsultaSQL = new javax.swing.JTextField();
+        txtFiltrarNombreConsultaSQL = new javax.swing.JTextField();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtQueryConsultaSQL = new javax.swing.JTextArea();
         jLabel57 = new javax.swing.JLabel();
-        pnlDashBoard = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        btnExportarExcelConsultaSQL = new javax.swing.JButton();
+        btnEliminarConsultaSQL = new javax.swing.JButton();
+        btnActualizarConsultaSQL = new javax.swing.JButton();
+        btnFiltrarNombreConsultaSQL = new javax.swing.JButton();
+        btnAgregarNuevaConsultaSQL = new javax.swing.JButton();
+        btnFiltrarIDConsultaSQL = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        btnLimpiarConsultaSQL = new javax.swing.JButton();
+        btnModificarConsultaSQL = new javax.swing.JButton();
         pnlAdministrar = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -189,6 +196,8 @@ public class PanelPrincipal extends javax.swing.JFrame {
         jLabel54 = new javax.swing.JLabel();
         btnLimpiarAdministrarGlosa = new javax.swing.JButton();
         btnBuscarAdministrarGlosa = new javax.swing.JButton();
+        pnlDashBoard = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -315,11 +324,15 @@ public class PanelPrincipal extends javax.swing.JFrame {
 
         cmbPatenteCFGlosa501.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
 
+        datechFechaInicioCFGlosa501.setDateFormatString("dd/MM/y");
+
         jLabel14.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
         jLabel14.setText("HASTA");
 
         jLabel15.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
         jLabel15.setText("DESDE");
+
+        datechFechaFinalCFGlosa501.setDateFormatString("dd/MM/y");
 
         btnBuscarCFGlosa501.setBackground(new java.awt.Color(0, 100, 80));
         btnBuscarCFGlosa501.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 16)); // NOI18N
@@ -421,13 +434,10 @@ public class PanelPrincipal extends javax.swing.JFrame {
 
         jtablelCFGlosa501.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane1.setViewportView(jtablelCFGlosa501);
@@ -496,11 +506,15 @@ public class PanelPrincipal extends javax.swing.JFrame {
 
         cmbPatenteCFGlosa507.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
 
+        datechFechaInicioCFGlosa507.setDateFormatString("dd/MM/y");
+
         jLabel22.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
         jLabel22.setText("HASTA");
 
         jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
         jLabel23.setText("DESDE");
+
+        datechFechaFinalCFGlosa507.setDateFormatString("dd/MM/y");
 
         btnBuscarCFGlosa507.setBackground(new java.awt.Color(0, 100, 80));
         btnBuscarCFGlosa507.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 16)); // NOI18N
@@ -593,13 +607,10 @@ public class PanelPrincipal extends javax.swing.JFrame {
 
         jtablelCFGlosa507.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane2.setViewportView(jtablelCFGlosa507);
@@ -676,6 +687,8 @@ public class PanelPrincipal extends javax.swing.JFrame {
 
         cmbPatenteCFGlosa554.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
         jPanel8.add(cmbPatenteCFGlosa554, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 102, 20));
+
+        datechFechaInicialCFGlosa554.setDateFormatString("dd/MM/y");
         jPanel8.add(datechFechaInicialCFGlosa554, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 110, 130, -1));
 
         jLabel30.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
@@ -685,6 +698,8 @@ public class PanelPrincipal extends javax.swing.JFrame {
         jLabel31.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
         jLabel31.setText("DESDE");
         jPanel8.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 71, -1));
+
+        datechFechaFinalCFGlosa554.setDateFormatString("dd/MM/y");
         jPanel8.add(datechFechaFinalCFGlosa554, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 110, 130, -1));
 
         btnBuscarCFGlosa554.setBackground(new java.awt.Color(0, 100, 80));
@@ -738,13 +753,10 @@ public class PanelPrincipal extends javax.swing.JFrame {
 
         jtablelCFGlosa554.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane3.setViewportView(jtablelCFGlosa554);
@@ -818,11 +830,15 @@ public class PanelPrincipal extends javax.swing.JFrame {
 
         cmbPatenteCFGlosa551.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
 
+        datechFechaInicialCFGlosa551.setDateFormatString("dd/MM/y");
+
         jLabel38.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
         jLabel38.setText("HASTA");
 
         jLabel39.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
         jLabel39.setText("DESDE");
+
+        datechFechaFinalCFGlosa551.setDateFormatString("dd/MM/y");
 
         btnBuscarCFGlosa551.setBackground(new java.awt.Color(0, 100, 80));
         btnBuscarCFGlosa551.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 16)); // NOI18N
@@ -953,13 +969,10 @@ public class PanelPrincipal extends javax.swing.JFrame {
 
         jtablelCFGlosa551.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane4.setViewportView(jtablelCFGlosa551);
@@ -1028,11 +1041,15 @@ public class PanelPrincipal extends javax.swing.JFrame {
 
         cmbPatenteCFGlosa701.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
 
+        datechFechaInicialCFGlosa701.setDateFormatString("dd/MM/y");
+
         jLabel46.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
         jLabel46.setText("HASTA");
 
         jLabel47.setFont(new java.awt.Font("Yu Gothic UI", 0, 11)); // NOI18N
         jLabel47.setText("DESDE");
+
+        datechFechaFinalCFGlosa701.setDateFormatString("dd/MM/y");
 
         btnBuscarCFGlosa701.setBackground(new java.awt.Color(0, 100, 80));
         btnBuscarCFGlosa701.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 16)); // NOI18N
@@ -1135,13 +1152,10 @@ public class PanelPrincipal extends javax.swing.JFrame {
 
         jtablelCFGlosa701.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane5.setViewportView(jtablelCFGlosa701);
@@ -1188,80 +1202,105 @@ public class PanelPrincipal extends javax.swing.JFrame {
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
         jPanel14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel14.setAutoscrolls(true);
+        jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel55.setBackground(new java.awt.Color(101, 178, 233));
         jLabel55.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 16)); // NOI18N
         jLabel55.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel55.setText("CONSULTAS PERSONALIZADAS (SQL)");
         jLabel55.setOpaque(true);
+        jPanel14.add(jLabel55, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 1, 808, 28));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtableConsultaSQL.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2"
+                "Title 1", "Title 2", "Title 3"
             }
         ));
-        jScrollPane7.setViewportView(jTable1);
+        jScrollPane7.setViewportView(jtableConsultaSQL);
 
-        jLabel1.setText("ID");
+        jPanel14.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 759, 130));
 
-        jLabel56.setText("Nombre");
+        jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        jLabel1.setText("ID:");
+        jPanel14.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 20, 20));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane8.setViewportView(jTextArea1);
+        jLabel56.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        jLabel56.setText("Nombre:");
+        jPanel14.add(jLabel56, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 50, 20));
+        jPanel14.add(txtFiltrarIDConsultaSQL, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 46, -1));
+        jPanel14.add(txtFiltrarNombreConsultaSQL, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 150, -1));
+
+        txtQueryConsultaSQL.setColumns(20);
+        txtQueryConsultaSQL.setRows(5);
+        jScrollPane8.setViewportView(txtQueryConsultaSQL);
+
+        jPanel14.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 259, 760, 260));
 
         jLabel57.setText("CONSULTA SQL");
+        jPanel14.add(jLabel57, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 110, 20));
 
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel55, javax.swing.GroupLayout.DEFAULT_SIZE, 808, Short.MAX_VALUE)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
-                        .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane8)
-                    .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel56))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel57))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane8)
-                    .addComponent(jScrollPane7))
-                .addGap(28, 28, 28))
-        );
+        btnExportarExcelConsultaSQL.setBackground(new java.awt.Color(255, 255, 255));
+        btnExportarExcelConsultaSQL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/excel2.png"))); // NOI18N
+        btnExportarExcelConsultaSQL.setToolTipText("Exportar a Excel");
+        btnExportarExcelConsultaSQL.setBorder(null);
+        btnExportarExcelConsultaSQL.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel14.add(btnExportarExcelConsultaSQL, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 40, 40, -1));
+
+        btnEliminarConsultaSQL.setBackground(new java.awt.Color(255, 255, 255));
+        btnEliminarConsultaSQL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/eliminar2.png"))); // NOI18N
+        btnEliminarConsultaSQL.setToolTipText("Eliminar");
+        btnEliminarConsultaSQL.setBorder(null);
+        btnEliminarConsultaSQL.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel14.add(btnEliminarConsultaSQL, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 220, 36, 36));
+
+        btnActualizarConsultaSQL.setBackground(new java.awt.Color(255, 255, 255));
+        btnActualizarConsultaSQL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/guardar2.png"))); // NOI18N
+        btnActualizarConsultaSQL.setToolTipText("Actualizar");
+        btnActualizarConsultaSQL.setBorder(null);
+        btnActualizarConsultaSQL.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel14.add(btnActualizarConsultaSQL, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 220, 36, 36));
+
+        btnFiltrarNombreConsultaSQL.setBackground(new java.awt.Color(255, 255, 255));
+        btnFiltrarNombreConsultaSQL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/filtrar.png"))); // NOI18N
+        btnFiltrarNombreConsultaSQL.setBorder(null);
+        btnFiltrarNombreConsultaSQL.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel14.add(btnFiltrarNombreConsultaSQL, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 50, 20, 20));
+
+        btnAgregarNuevaConsultaSQL.setBackground(new java.awt.Color(255, 255, 255));
+        btnAgregarNuevaConsultaSQL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/agregar.png"))); // NOI18N
+        btnAgregarNuevaConsultaSQL.setToolTipText("Nuevo registro");
+        btnAgregarNuevaConsultaSQL.setBorder(null);
+        btnAgregarNuevaConsultaSQL.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel14.add(btnAgregarNuevaConsultaSQL, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 40, 36, 36));
+
+        btnFiltrarIDConsultaSQL.setBackground(new java.awt.Color(255, 255, 255));
+        btnFiltrarIDConsultaSQL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/filtrar.png"))); // NOI18N
+        btnFiltrarIDConsultaSQL.setBorder(null);
+        btnFiltrarIDConsultaSQL.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel14.add(btnFiltrarIDConsultaSQL, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 20, 20));
+
+        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel14.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 310, 10));
+
+        btnLimpiarConsultaSQL.setBackground(new java.awt.Color(255, 255, 255));
+        btnLimpiarConsultaSQL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/limpiar3.png"))); // NOI18N
+        btnLimpiarConsultaSQL.setToolTipText("Limpiar");
+        btnLimpiarConsultaSQL.setBorder(null);
+        btnLimpiarConsultaSQL.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel14.add(btnLimpiarConsultaSQL, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 40, 40, -1));
+
+        btnModificarConsultaSQL.setBackground(new java.awt.Color(255, 255, 255));
+        btnModificarConsultaSQL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/editar.png"))); // NOI18N
+        btnModificarConsultaSQL.setToolTipText("Editar");
+        btnModificarConsultaSQL.setBorder(null);
+        btnModificarConsultaSQL.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel14.add(btnModificarConsultaSQL, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 220, 36, 36));
 
         javax.swing.GroupLayout pnlConsultaSQLLayout = new javax.swing.GroupLayout(pnlConsultaSQL);
         pnlConsultaSQL.setLayout(pnlConsultaSQLLayout);
@@ -1281,29 +1320,6 @@ public class PanelPrincipal extends javax.swing.JFrame {
         );
 
         pnlContenedor.add(pnlConsultaSQL, "card2");
-
-        pnlDashBoard.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel2.setText("DASHBOARD");
-
-        javax.swing.GroupLayout pnlDashBoardLayout = new javax.swing.GroupLayout(pnlDashBoard);
-        pnlDashBoard.setLayout(pnlDashBoardLayout);
-        pnlDashBoardLayout.setHorizontalGroup(
-            pnlDashBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlDashBoardLayout.createSequentialGroup()
-                .addGap(219, 219, 219)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(422, Short.MAX_VALUE))
-        );
-        pnlDashBoardLayout.setVerticalGroup(
-            pnlDashBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlDashBoardLayout.createSequentialGroup()
-                .addGap(174, 174, 174)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(364, Short.MAX_VALUE))
-        );
-
-        pnlContenedor.add(pnlDashBoard, "card4");
 
         pnlAdministrar.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1335,7 +1351,7 @@ public class PanelPrincipal extends javax.swing.JFrame {
         btnEliminarAdministrarGlosa.setBackground(new java.awt.Color(138, 36, 50));
         btnEliminarAdministrarGlosa.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
         btnEliminarAdministrarGlosa.setForeground(new java.awt.Color(255, 255, 255));
-        btnEliminarAdministrarGlosa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/subirArchivo.png"))); // NOI18N
+        btnEliminarAdministrarGlosa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/eliminar.png"))); // NOI18N
         btnEliminarAdministrarGlosa.setText("ELIMINAR");
         btnEliminarAdministrarGlosa.setBorder(null);
         btnEliminarAdministrarGlosa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -1373,13 +1389,10 @@ public class PanelPrincipal extends javax.swing.JFrame {
 
         jtableAdministrarGlosa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane6.setViewportView(jtableAdministrarGlosa);
@@ -1404,7 +1417,7 @@ public class PanelPrincipal extends javax.swing.JFrame {
         btnLimpiarAdministrarGlosa.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
         btnLimpiarAdministrarGlosa.setForeground(new java.awt.Color(255, 255, 255));
         btnLimpiarAdministrarGlosa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/limpiar.png"))); // NOI18N
-        btnLimpiarAdministrarGlosa.setText(" BUSCAR");
+        btnLimpiarAdministrarGlosa.setText(" LIMPIAR");
         btnLimpiarAdministrarGlosa.setBorder(null);
         btnLimpiarAdministrarGlosa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLimpiarAdministrarGlosa.addActionListener(new java.awt.event.ActionListener() {
@@ -1452,6 +1465,29 @@ public class PanelPrincipal extends javax.swing.JFrame {
         );
 
         pnlContenedor.add(pnlAdministrar, "card5");
+
+        pnlDashBoard.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel2.setText("DASHBOARD");
+
+        javax.swing.GroupLayout pnlDashBoardLayout = new javax.swing.GroupLayout(pnlDashBoard);
+        pnlDashBoard.setLayout(pnlDashBoardLayout);
+        pnlDashBoardLayout.setHorizontalGroup(
+            pnlDashBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDashBoardLayout.createSequentialGroup()
+                .addGap(219, 219, 219)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(422, Short.MAX_VALUE))
+        );
+        pnlDashBoardLayout.setVerticalGroup(
+            pnlDashBoardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDashBoardLayout.createSequentialGroup()
+                .addGap(174, 174, 174)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(364, Short.MAX_VALUE))
+        );
+
+        pnlContenedor.add(pnlDashBoard, "card4");
 
         jPanel1.add(pnlContenedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 830, 570));
 
@@ -1526,6 +1562,8 @@ public class PanelPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnActualizarConsultaSQL;
+    public javax.swing.JButton btnAgregarNuevaConsultaSQL;
     public javax.swing.JButton btnBuscarAdministrarGlosa;
     public javax.swing.JButton btnBuscarCFGlosa501;
     public javax.swing.JButton btnBuscarCFGlosa507;
@@ -1535,12 +1573,18 @@ public class PanelPrincipal extends javax.swing.JFrame {
     public javax.swing.JButton btnCargarComprimidoAdministrarGlosa;
     public javax.swing.JButton btnCargarIndividualAdministrarGlosa;
     public javax.swing.JButton btnEliminarAdministrarGlosa;
+    public javax.swing.JButton btnEliminarConsultaSQL;
+    public javax.swing.JButton btnExportarExcelConsultaSQL;
+    public javax.swing.JButton btnFiltrarIDConsultaSQL;
+    public javax.swing.JButton btnFiltrarNombreConsultaSQL;
     public javax.swing.JButton btnLimpiarAdministrarGlosa;
+    public javax.swing.JButton btnLimpiarConsultaSQL;
     public javax.swing.JButton btnLimpiarFiltrosCFGlosa501;
     public javax.swing.JButton btnLimpiarFiltrosCFGlosa507;
     public javax.swing.JButton btnLimpiarFiltrosCFGlosa551;
     public javax.swing.JButton btnLimpiarFiltrosCFGlosa554;
     public javax.swing.JButton btnLimpiarFiltrosCFGlosa701;
+    public javax.swing.JButton btnModificarConsultaSQL;
     public javax.swing.JLabel btnSalir;
     public javax.swing.JLabel btnVistaAdministrar;
     public javax.swing.JLabel btnVistaConsulta;
@@ -1660,12 +1704,10 @@ public class PanelPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JSeparator jSeparator1;
     public javax.swing.JTextField jTextField7;
     public javax.swing.JTable jtableAdministrarGlosa;
+    public javax.swing.JTable jtableConsultaSQL;
     public javax.swing.JTable jtablelCFGlosa501;
     public javax.swing.JTable jtablelCFGlosa507;
     public javax.swing.JTable jtablelCFGlosa551;
@@ -1679,6 +1721,8 @@ public class PanelPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel pnlEncabezado;
     private javax.swing.JPanel pnlMenuLateral;
     public javax.swing.JTextField txtComplementoCFGlosa554;
+    public javax.swing.JTextField txtFiltrarIDConsultaSQL;
+    public javax.swing.JTextField txtFiltrarNombreConsultaSQL;
     public javax.swing.JTextField txtFraccionCFGlosa551;
     public javax.swing.JTextField txtFraccionCFGlosa554;
     public javax.swing.JTextField txtIdentificadorCFGlosa554;
@@ -1686,6 +1730,7 @@ public class PanelPrincipal extends javax.swing.JFrame {
     public javax.swing.JTextField txtPedimentoCFGlosa501;
     public javax.swing.JTextField txtPedimentoCFGlosa551;
     public javax.swing.JTextField txtPedimentoCFGlosa554;
+    public javax.swing.JTextArea txtQueryConsultaSQL;
     public javax.swing.JTextField txtSecuenciaFraccionCFGlosa551;
     public javax.swing.JTextField txtSecuenciaFraccionCFGlosa554;
     // End of variables declaration//GEN-END:variables

@@ -1,6 +1,7 @@
 package Controlador;
 
 import Vista.PanelPrincipal;
+import Vista.PopUpAgregarConsultaSQL;
 import Vista.PopUpEliminar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,10 +12,12 @@ public class CtrlFrame implements MouseListener, ActionListener {
 
     private PanelPrincipal frmPrincipal;
     private PopUpEliminar frmEliminar;
+    private PopUpAgregarConsultaSQL frmAgregarConsultaSQL;
 
-    public CtrlFrame(PanelPrincipal frmPrincipal, PopUpEliminar frmEliminar) {
+    public CtrlFrame(PanelPrincipal frmPrincipal, PopUpEliminar frmEliminar, PopUpAgregarConsultaSQL frmAgregarConsultaSQL) {
         this.frmPrincipal = frmPrincipal;
         this.frmEliminar = frmEliminar;
+        this.frmAgregarConsultaSQL = frmAgregarConsultaSQL;
         this.frmPrincipal.btnVistaAdministrar.addMouseListener(this);
         this.frmPrincipal.btnVistaConsulta.addMouseListener(this);
         this.frmPrincipal.btnVistaConsultaSQL.addMouseListener(this);
@@ -29,6 +32,10 @@ public class CtrlFrame implements MouseListener, ActionListener {
         frmPrincipal.setResizable(false);
         frmPrincipal.setTitle("Reportador Data Stage");
         frmPrincipal.setLocationRelativeTo(null);
+        frmAgregarConsultaSQL.txtDescripcionpopAgregarConsultaSQL.setLineWrap(true);
+        frmAgregarConsultaSQL.txtQuerypopAgregarConsultaSQL.setLineWrap(true);
+        frmPrincipal.txtQueryConsultaSQL.setLineWrap(true);
+        
     }
     
     
