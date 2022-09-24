@@ -2,6 +2,7 @@ package Controlador;
 
 import Vista.PanelPrincipal;
 import Vista.PopUpAgregarConsultaSQL;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,17 +35,23 @@ public class CtrlConsultasSQL implements ActionListener {
             frmAgregarConsultaSQL.setVisible(false);
             frmPrincipal.setEnabled(true);
             frmPrincipal.setVisible(true);
+            frmAgregarConsultaSQL.txtDescripcionpopAgregarConsultaSQL.setText("");
+            frmAgregarConsultaSQL.txtNombrepopAgregarConsultaSQL.setText("");
+            frmAgregarConsultaSQL.txtQuerypopAgregarConsultaSQL.setText("");
+            
         }
         if (ev.getSource() == frmPrincipal.btnModificarConsultaSQL) {
             if (frmPrincipal.btnModificarConsultaSQL.getToolTipText().equals("Editar")) {
                 frmPrincipal.btnModificarConsultaSQL.setToolTipText("Cancelar");
                 frmPrincipal.btnModificarConsultaSQL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/noEditar.png")));
                 frmPrincipal.txtQueryConsultaSQL.setEnabled(true);
+                frmPrincipal.txtQueryConsultaSQL.setBackground(Color.WHITE);
                 
             }else{
                 frmPrincipal.btnModificarConsultaSQL.setToolTipText("Editar");
-                frmPrincipal.btnModificarConsultaSQL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/noEditar.png")));
-                frmPrincipal.txtQueryConsultaSQL.setEnabled(true);
+                frmPrincipal.btnModificarConsultaSQL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/Editar.png")));
+                frmPrincipal.txtQueryConsultaSQL.setEnabled(false);
+                frmPrincipal.txtQueryConsultaSQL.setBackground(Color.lightGray);
             }
         }
     }

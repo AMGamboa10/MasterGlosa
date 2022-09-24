@@ -11,16 +11,21 @@ public class Glosa508 {
     private String InstitucionEmisora;
     private String NumeroCuenta;
     private String FolioConstancia;
-    private Date FechaConstancia;
+    private java.sql.Date FechaConstancia;
     private String TipoCuenta;
     private String ClaveGarantia;
     private double ValorUnitarioTitulo;
     private String TotalGarantia;
     private String CantidadUnidades;
     private String TitulosAsignados;
-    private Date FechaPagoReal;
+    private java.sql.Date FechaPagoReal;
+    
+    private java.sql.Date FechaInicio;
+    private java.sql.Date FechaFinal;
+    private int mes;
+    private int año;
 
-    public Glosa508(int id, String Patente, String Pedimento, String SeccionAduanera, String InstitucionEmisora, String NumeroCuenta, String FolioConstancia, Date FechaConstancia, String TipoCuenta, String ClaveGarantia, double ValorUnitarioTitulo, String TotalGarantia, String CantidadUnidades, String TitulosAsignados, Date FechaPagoReal) {
+    public Glosa508(int id, String Patente, String Pedimento, String SeccionAduanera, String InstitucionEmisora, String NumeroCuenta, String FolioConstancia, java.sql.Date FechaConstancia, String TipoCuenta, String ClaveGarantia, double ValorUnitarioTitulo, String TotalGarantia, String CantidadUnidades, String TitulosAsignados, java.sql.Date FechaPagoReal) {
         this.id = id;
         this.Patente = Patente;
         this.Pedimento = Pedimento;
@@ -36,6 +41,9 @@ public class Glosa508 {
         this.CantidadUnidades = CantidadUnidades;
         this.TitulosAsignados = TitulosAsignados;
         this.FechaPagoReal = FechaPagoReal;
+    }
+
+    public Glosa508() {
     }
 
     public int getId() {
@@ -94,13 +102,39 @@ public class Glosa508 {
         this.FolioConstancia = FolioConstancia;
     }
 
-    public Date getFechaConstancia() {
+    public java.sql.Date getFechaConstancia() {
         return FechaConstancia;
     }
 
-    public void setFechaConstancia(Date FechaConstancia) {
+    public void setFechaConstancia(java.sql.Date FechaConstancia) {
         this.FechaConstancia = FechaConstancia;
     }
+
+    public java.sql.Date getFechaPagoReal() {
+        return FechaPagoReal;
+    }
+
+    public void setFechaPagoReal(java.sql.Date FechaPagoReal) {
+        this.FechaPagoReal = FechaPagoReal;
+    }
+
+    public java.sql.Date getFechaInicio() {
+        return FechaInicio;
+    }
+
+    public void setFechaInicio(java.sql.Date FechaInicio) {
+        this.FechaInicio = FechaInicio;
+    }
+
+    public java.sql.Date getFechaFinal() {
+        return FechaFinal;
+    }
+
+    public void setFechaFinal(java.sql.Date FechaFinal) {
+        this.FechaFinal = FechaFinal;
+    }
+
+    
 
     public String getTipoCuenta() {
         return TipoCuenta;
@@ -150,12 +184,20 @@ public class Glosa508 {
         this.TitulosAsignados = TitulosAsignados;
     }
 
-    public Date getFechaPagoReal() {
-        return FechaPagoReal;
+    public int getMes() {
+        return mes;
     }
 
-    public void setFechaPagoReal(Date FechaPagoReal) {
-        this.FechaPagoReal = FechaPagoReal;
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public int getAño() {
+        return año;
+    }
+
+    public void setAño(int año) {
+        this.año = año;
     }
     
     

@@ -15,9 +15,14 @@ public class Glosa553 {
     private String NumeroPermiso;
     private double ValorComercialDolares;
     private double CantidadMUMTarifa;
-    private Date FechaPagoReal;
+    private java.sql.Date FechaPagoReal;
+    
+    private java.sql.Date FechaInicio;
+    private java.sql.Date FechaFinal;
+    private int mes;
+    private int año;
 
-    public Glosa553(int id, String Patente, String Pedimento, String SeccionAduanera, String Fraccion, String SecuenciaFraccion, String ClavePermiso, String FirmaDescargo, String NumeroPermiso, double ValorComercialDolares, double CantidadMUMTarifa, Date FechaPagoReal) {
+    public Glosa553(int id, String Patente, String Pedimento, String SeccionAduanera, String Fraccion, String SecuenciaFraccion, String ClavePermiso, String FirmaDescargo, String NumeroPermiso, double ValorComercialDolares, double CantidadMUMTarifa, java.sql.Date FechaPagoReal) {
         this.id = id;
         this.Patente = Patente;
         this.Pedimento = Pedimento;
@@ -30,6 +35,9 @@ public class Glosa553 {
         this.ValorComercialDolares = ValorComercialDolares;
         this.CantidadMUMTarifa = CantidadMUMTarifa;
         this.FechaPagoReal = FechaPagoReal;
+    }
+
+    public Glosa553() {
     }
 
     public int getId() {
@@ -120,12 +128,44 @@ public class Glosa553 {
         this.CantidadMUMTarifa = CantidadMUMTarifa;
     }
 
-    public Date getFechaPagoReal() {
+    public java.sql.Date getFechaPagoReal() {
         return FechaPagoReal;
     }
 
-    public void setFechaPagoReal(Date FechaPagoReal) {
+    public void setFechaPagoReal(java.sql.Date FechaPagoReal) {
         this.FechaPagoReal = FechaPagoReal;
+    }
+
+    public java.sql.Date getFechaInicio() {
+        return FechaInicio;
+    }
+
+    public void setFechaInicio(java.sql.Date FechaInicio) {
+        this.FechaInicio = FechaInicio;
+    }
+
+    public java.sql.Date getFechaFinal() {
+        return FechaFinal;
+    }
+
+    public void setFechaFinal(java.sql.Date FechaFinal) {
+        this.FechaFinal = FechaFinal;
+    }
+
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public int getAño() {
+        return año;
+    }
+
+    public void setAño(int año) {
+        this.año = año;
     }
     
     

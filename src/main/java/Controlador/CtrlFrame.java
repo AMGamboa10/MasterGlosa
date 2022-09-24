@@ -3,6 +3,11 @@ package Controlador;
 import Vista.PanelPrincipal;
 import Vista.PopUpAgregarConsultaSQL;
 import Vista.PopUpEliminar;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -35,6 +40,14 @@ public class CtrlFrame implements MouseListener, ActionListener {
         frmAgregarConsultaSQL.txtDescripcionpopAgregarConsultaSQL.setLineWrap(true);
         frmAgregarConsultaSQL.txtQuerypopAgregarConsultaSQL.setLineWrap(true);
         frmPrincipal.txtQueryConsultaSQL.setLineWrap(true);
+        frmPrincipal.txtQueryConsultaSQL.setEnabled(false);
+        frmPrincipal.txtQueryConsultaSQL.setBackground(Color.lightGray);
+        
+        //Image im = Toolkit.getDefaultToolkit().createImage("/icons/cursorProhibido.png");
+        //Cursor cur = Toolkit.getDefaultToolkit().createCustomCursor(im, new Point(23,23), "Prohibido");
+        //frmPrincipal.txtQueryConsultaSQL.setCursor(cur);
+        
+        
         
     }
     
@@ -52,6 +65,10 @@ public class CtrlFrame implements MouseListener, ActionListener {
             frmEliminar.setVisible(false);
             frmPrincipal.setEnabled(true);
             frmPrincipal.setVisible(true);
+            frmEliminar.cmbAñopopEliminar.setSelectedItem("Seleccionar");
+            frmEliminar.cmbEliminarTipopopEliminar.setSelectedItem("Seleccionar");
+            frmEliminar.cmbGlosapopEliminar.setSelectedItem("Seleccionar");
+            frmEliminar.cmbMespopEliminar.setSelectedItem("Seleccionar");
         }
     }
     

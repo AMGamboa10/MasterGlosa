@@ -8,7 +8,7 @@ public class Glosa505 {
     private String Patente;
     private String Pedimento;
     private String SeccionAduanera;
-    private Date FechaFacturacion;
+    private java.sql.Date FechaFacturacion;
     private String NumeroFactura;
     private String TerminoFacturacion;
     private String MonedaFacturacion;
@@ -23,9 +23,14 @@ public class Glosa505 {
     private String NumExteriorProveedor;
     private String CpProveedor;
     private String MunicipioProveedor;
-    private Date FechaPagoReal;
+    private java.sql.Date FechaPagoReal;
+    
+    private java.sql.Date FechaInicio;
+    private java.sql.Date FechaFinal;
+    private int mes;
+    private int año;
 
-    public Glosa505(int id, String Patente, String Pedimento, String SeccionAduanera, Date FechaFacturacion, String NumeroFactura, String TerminoFacturacion, String MonedaFacturacion, double ValorDolares, double ValorMonedaExtranjera, String PaisFacturacion, String EntidadFedFacturacion, String IndentFiscalProveedor, String ProveedorMercancia, String CalleProveedor, String NumInteriorProveedor, String NumExteriorProveedor, String CpProveedor, String MunicipioProveedor, Date FechaPagoReal) {
+    public Glosa505(int id, String Patente, String Pedimento, String SeccionAduanera, java.sql.Date FechaFacturacion, String NumeroFactura, String TerminoFacturacion, String MonedaFacturacion, double ValorDolares, double ValorMonedaExtranjera, String PaisFacturacion, String EntidadFedFacturacion, String IndentFiscalProveedor, String ProveedorMercancia, String CalleProveedor, String NumInteriorProveedor, String NumExteriorProveedor, String CpProveedor, String MunicipioProveedor, java.sql.Date FechaPagoReal) {
         this.id = id;
         this.Patente = Patente;
         this.Pedimento = Pedimento;
@@ -46,6 +51,9 @@ public class Glosa505 {
         this.CpProveedor = CpProveedor;
         this.MunicipioProveedor = MunicipioProveedor;
         this.FechaPagoReal = FechaPagoReal;
+    }
+
+    public Glosa505() {
     }
 
     public int getId() {
@@ -80,11 +88,11 @@ public class Glosa505 {
         this.SeccionAduanera = SeccionAduanera;
     }
 
-    public Date getFechaFacturacion() {
+    public java.sql.Date getFechaFacturacion() {
         return FechaFacturacion;
     }
 
-    public void setFechaFacturacion(Date FechaFacturacion) {
+    public void setFechaFacturacion(java.sql.Date FechaFacturacion) {
         this.FechaFacturacion = FechaFacturacion;
     }
 
@@ -200,12 +208,44 @@ public class Glosa505 {
         this.MunicipioProveedor = MunicipioProveedor;
     }
 
-    public Date getFechaPagoReal() {
+    public java.sql.Date getFechaPagoReal() {
         return FechaPagoReal;
     }
 
-    public void setFechaPagoReal(Date FechaPagoReal) {
+    public void setFechaPagoReal(java.sql.Date FechaPagoReal) {
         this.FechaPagoReal = FechaPagoReal;
+    }
+
+    public java.sql.Date getFechaInicio() {
+        return FechaInicio;
+    }
+
+    public void setFechaInicio(java.sql.Date FechaInicio) {
+        this.FechaInicio = FechaInicio;
+    }
+
+    public java.sql.Date getFechaFinal() {
+        return FechaFinal;
+    }
+
+    public void setFechaFinal(java.sql.Date FechaFinal) {
+        this.FechaFinal = FechaFinal;
+    }
+
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public int getAño() {
+        return año;
+    }
+
+    public void setAño(int año) {
+        this.año = año;
     }
     
     

@@ -12,9 +12,14 @@ public class Glosa507 {
     private String IdentificadorCaso;
     private String TipoPedimento;
     private String ComplementoCaso;
-    private Date FechaValidacionPagoR;
+    private java.sql.Date FechaValidacionPagoR;
+    
+    private java.sql.Date FechaInicio;
+    private java.sql.Date FechaFinal;
+    private int mes;
+    private int año;
 
-    public Glosa507(int id, String Patente, String Pedimento, String SeccionAduanera, String ClaveCaso, String IdentificadorCaso, String TipoPedimento, String ComplementoCaso, Date FechaValidacionPagoR) {
+    public Glosa507(int id, String Patente, String Pedimento, String SeccionAduanera, String ClaveCaso, String IdentificadorCaso, String TipoPedimento, String ComplementoCaso, java.sql.Date FechaValidacionPagoR) {
         this.id = id;
         this.Patente = Patente;
         this.Pedimento = Pedimento;
@@ -24,6 +29,9 @@ public class Glosa507 {
         this.TipoPedimento = TipoPedimento;
         this.ComplementoCaso = ComplementoCaso;
         this.FechaValidacionPagoR = FechaValidacionPagoR;
+    }
+
+    public Glosa507() {
     }
 
     public int getId() {
@@ -90,13 +98,47 @@ public class Glosa507 {
         this.ComplementoCaso = ComplementoCaso;
     }
 
-    public Date getFechaValidacionPagoR() {
+    public java.sql.Date getFechaValidacionPagoR() {
         return FechaValidacionPagoR;
     }
 
-    public void setFechaValidacionPagoR(Date FechaValidacionPagoR) {
+    public void setFechaValidacionPagoR(java.sql.Date FechaValidacionPagoR) {
         this.FechaValidacionPagoR = FechaValidacionPagoR;
     }
+
+    public java.sql.Date getFechaInicio() {
+        return FechaInicio;
+    }
+
+    public void setFechaInicio(java.sql.Date FechaInicio) {
+        this.FechaInicio = FechaInicio;
+    }
+
+    public java.sql.Date getFechaFinal() {
+        return FechaFinal;
+    }
+
+    public void setFechaFinal(java.sql.Date FechaFinal) {
+        this.FechaFinal = FechaFinal;
+    }
+
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public int getAño() {
+        return año;
+    }
+
+    public void setAño(int año) {
+        this.año = año;
+    }
+    
+    
     
 
 }

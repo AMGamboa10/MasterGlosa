@@ -13,9 +13,14 @@ public class Glosa502 {
     private String NombreTransportista;
     private String PaisTransporte;
     private String IdentificadorTransporte;
-    private Date FechaPagoReal;
+    private java.sql.Date FechaPagoReal;
+    
+    private java.sql.Date FechaInicio;
+    private java.sql.Date FechaFinal;
+    private int mes;
+    private int año;
 
-    public Glosa502(int id, String Patente, String Pedimento, String SeccionAduanera, String RfcTransportista, String CurpTransportista, String NombreTransportista, String PaisTransporte, String IdentificadorTransporte, Date FechaPagoReal) {
+    public Glosa502(int id, String Patente, String Pedimento, String SeccionAduanera, String RfcTransportista, String CurpTransportista, String NombreTransportista, String PaisTransporte, String IdentificadorTransporte, java.sql.Date FechaPagoReal) {
         this.id = id;
         this.Patente = Patente;
         this.Pedimento = Pedimento;
@@ -26,6 +31,9 @@ public class Glosa502 {
         this.PaisTransporte = PaisTransporte;
         this.IdentificadorTransporte = IdentificadorTransporte;
         this.FechaPagoReal = FechaPagoReal;
+    }
+
+    public Glosa502() {
     }
 
     public int getId() {
@@ -100,13 +108,46 @@ public class Glosa502 {
         this.IdentificadorTransporte = IdentificadorTransporte;
     }
 
-    public Date getFechaPagoReal() {
+    public java.sql.Date getFechaInicio() {
+        return FechaInicio;
+    }
+
+    public void setFechaInicio(java.sql.Date FechaInicio) {
+        this.FechaInicio = FechaInicio;
+    }
+
+    public java.sql.Date getFechaFinal() {
+        return FechaFinal;
+    }
+
+    public void setFechaFinal(java.sql.Date FechaFinal) {
+        this.FechaFinal = FechaFinal;
+    }
+
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public int getAño() {
+        return año;
+    }
+
+    public void setAño(int año) {
+        this.año = año;
+    }
+
+    public java.sql.Date getFechaPagoReal() {
         return FechaPagoReal;
     }
 
-    public void setFechaPagoReal(Date FechaPagoReal) {
+    public void setFechaPagoReal(java.sql.Date FechaPagoReal) {
         this.FechaPagoReal = FechaPagoReal;
     }
+    
     
     
 

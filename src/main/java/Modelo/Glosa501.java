@@ -1,6 +1,5 @@
 package Modelo;
 
-import java.util.Date;
 
 public class Glosa501 {
 
@@ -34,10 +33,16 @@ public class Glosa501 {
     private String EntidadFedContribuyente;
     private String PaisContribuyente;
     private String TipoPedimento;
-    private Date FechaRecepcionPedimento;
-    private Date FechaPagoReal;
+    private java.sql.Date FechaRecepcionPedimento;
+    private java.sql.Date FechaPagoReal;
+    
+    private java.sql.Date FechaInicio;
+    private java.sql.Date FechaFinal;
+    private int mes;
+    private int año;
 
-    public Glosa501(int id, String Patente, String Pedimento, String SeccionAduanera, String TipoOperacion, String ClaveDocumento, String SeccionAduaneraEntrada, String CurpContribuyente, String Rfc, String CurpAgenteA, double TipoCambio, int TotalFletes, int TotalSeguros, int TotalEmbalajes, int TotalIncrementables, int TotalDeducibles, double PesoBrutoMercancia, String MedioTransporteSalida, String MedioTransporteArribo, String MedioTransporteEntrada_Salida, String DestinoMercancia, String NombreContribuyente, String CalleContribuyente, String NumeroContribuyente, String NumExteriorContribuyente, String CPContribuyente, String MunicipioContribuyente, String EntidadFedContribuyente, String PaisContribuyente, String TipoPedimento, Date FechaRecepcionPedimento, Date FechaPagoReal) {
+
+    public Glosa501(int id, String Patente, String Pedimento, String SeccionAduanera, String TipoOperacion, String ClaveDocumento, String SeccionAduaneraEntrada, String CurpContribuyente, String Rfc, String CurpAgenteA, double TipoCambio, int TotalFletes, int TotalSeguros, int TotalEmbalajes, int TotalIncrementables, int TotalDeducibles, double PesoBrutoMercancia, String MedioTransporteSalida, String MedioTransporteArribo, String MedioTransporteEntrada_Salida, String DestinoMercancia, String NombreContribuyente, String CalleContribuyente, String NumeroContribuyente, String NumExteriorContribuyente, String CPContribuyente, String MunicipioContribuyente, String EntidadFedContribuyente, String PaisContribuyente, String TipoPedimento, java.sql.Date FechaRecepcionPedimento, java.sql.Date FechaPagoReal) {
         this.id = id;
         this.Patente = Patente;
         this.Pedimento = Pedimento;
@@ -72,6 +77,9 @@ public class Glosa501 {
         this.FechaPagoReal = FechaPagoReal;
     }
 
+    public Glosa501() {
+    }
+    
     public int getId() {
         return id;
     }
@@ -312,20 +320,52 @@ public class Glosa501 {
         this.TipoPedimento = TipoPedimento;
     }
 
-    public Date getFechaRecepcionPedimento() {
+    public java.sql.Date getFechaRecepcionPedimento() {
         return FechaRecepcionPedimento;
     }
 
-    public void setFechaRecepcionPedimento(Date FechaRecepcionPedimento) {
+    public void setFechaRecepcionPedimento(java.sql.Date FechaRecepcionPedimento) {
         this.FechaRecepcionPedimento = FechaRecepcionPedimento;
     }
 
-    public Date getFechaPagoReal() {
+    public java.sql.Date getFechaPagoReal() {
         return FechaPagoReal;
     }
 
-    public void setFechaPagoReal(Date FechaPagoReal) {
+    public void setFechaPagoReal(java.sql.Date FechaPagoReal) {
         this.FechaPagoReal = FechaPagoReal;
+    }
+
+    public java.sql.Date getFechaInicio() {
+        return FechaInicio;
+    }
+
+    public void setFechaInicio(java.sql.Date FechaInicio) {
+        this.FechaInicio = FechaInicio;
+    }
+
+    public java.sql.Date getFechaFinal() {
+        return FechaFinal;
+    }
+
+    public void setFechaFinal(java.sql.Date FechaFinal) {
+        this.FechaFinal = FechaFinal;
+    }
+
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public int getAño() {
+        return año;
+    }
+
+    public void setAño(int año) {
+        this.año = año;
     }
     
     
