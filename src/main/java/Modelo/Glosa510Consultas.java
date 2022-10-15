@@ -92,7 +92,7 @@ public class Glosa510Consultas extends Conexion {
         double ImportePago;
         java.sql.Date FechaPagoReal;
 
-        String sql = "";
+        String sql = "Select * from Glosa510 Where FechaPagoReal >= ? and FechaPagoReal <=?;";
 
         ArrayList<Glosa510> lista = new ArrayList<>();
         

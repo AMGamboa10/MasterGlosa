@@ -183,7 +183,7 @@ public class PanelPrincipal extends javax.swing.JFrame {
         btnEliminarAdministrarGlosa = new javax.swing.JButton();
         btnCargarComprimidoAdministrarGlosa = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
-        btnexportarExcelCFGlosa502 = new javax.swing.JButton();
+        btnexportarExcelAdministrar = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         jtableAdministrarGlosa = new javax.swing.JTable();
@@ -1375,14 +1375,14 @@ public class PanelPrincipal extends javax.swing.JFrame {
         jPanel13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnexportarExcelCFGlosa502.setBackground(new java.awt.Color(16, 124, 65));
-        btnexportarExcelCFGlosa502.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 16)); // NOI18N
-        btnexportarExcelCFGlosa502.setForeground(new java.awt.Color(255, 255, 255));
-        btnexportarExcelCFGlosa502.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/excel.png"))); // NOI18N
-        btnexportarExcelCFGlosa502.setText(" EXPORTAR");
-        btnexportarExcelCFGlosa502.setBorder(null);
-        btnexportarExcelCFGlosa502.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel13.add(btnexportarExcelCFGlosa502, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 38, 130, 27));
+        btnexportarExcelAdministrar.setBackground(new java.awt.Color(16, 124, 65));
+        btnexportarExcelAdministrar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 16)); // NOI18N
+        btnexportarExcelAdministrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnexportarExcelAdministrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/excel.png"))); // NOI18N
+        btnexportarExcelAdministrar.setText(" EXPORTAR");
+        btnexportarExcelAdministrar.setBorder(null);
+        btnexportarExcelAdministrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel13.add(btnexportarExcelAdministrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 38, 130, 27));
 
         jLabel21.setBackground(new java.awt.Color(101, 178, 233));
         jLabel21.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
@@ -1598,8 +1598,8 @@ public class PanelPrincipal extends javax.swing.JFrame {
     public javax.swing.JLabel btnVistaConsulta;
     public javax.swing.JLabel btnVistaConsultaSQL;
     public javax.swing.JLabel btnVistaDashboard;
+    public javax.swing.JButton btnexportarExcelAdministrar;
     public javax.swing.JButton btnexportarExcelCFGlosa501;
-    public javax.swing.JButton btnexportarExcelCFGlosa502;
     public javax.swing.JButton btnexportarExcelCFGlosa507;
     public javax.swing.JButton btnexportarExcelCFGlosa551;
     public javax.swing.JButton btnexportarExcelCFGlosa554;

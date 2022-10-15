@@ -90,7 +90,7 @@ public class Glosa502Consultas extends Conexion {
         String Patente,Pedimento,SeccionAduanera,RfcTransportista,CurpTransportista,NombreTransportista,PaisTransporte,IdentificadorTransporte;
         java.sql.Date FechaPagoReal;
         
-        String sql = "Select * from Glosa502 Where FechaPago >= ? and FechaPago <=?;";
+        String sql = "Select * from Glosa502 Where FechaPagoReal >= ? and FechaPagoReal <=?;";
         
         ArrayList<Glosa502> lista = new ArrayList<>();
         

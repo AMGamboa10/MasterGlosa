@@ -107,7 +107,7 @@ public class Glosa505Consultas extends Conexion {
         double ValorDolares, ValorMonedaExtranjera;
         java.sql.Date FechaPagoReal;
 
-        String sql = "Select * from Glosa505 Where FechaPago >= ? and FechaPago <=?;";
+        String sql = "Select * from Glosa505 Where FechaPagoReal >= ? and FechaPagoReal <=?;";
 
         ArrayList<Glosa505> lista = new ArrayList<>();
 

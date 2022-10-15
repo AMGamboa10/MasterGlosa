@@ -98,7 +98,7 @@ public class Glosa512Consultas extends Conexion {
         double MercanciaDescargada;
         java.sql.Date FechaOperacionOrig, FechaPagoReal;
 
-        String sql = "Select * from Glosa512 Where FechaPago >= ? and FechaPago <=?;";
+        String sql = "Select * from Glosa512 Where FechaPagoReal >= ? and FechaPagoReal <=?;";
 
         ArrayList<Glosa512> lista = new ArrayList<>();
 
@@ -145,7 +145,7 @@ public class Glosa512Consultas extends Conexion {
 
         PreparedStatement ps = null;
         Connection con = getConexion();
-
+        
         String sql = "Update Glosa512 SET Patente = ?, Pedimento = ?, SeccionAduanera = ?, PatenteAduanalOrig = ?, PedimentoOriginal = ?, "
                 + "SeccionAduaneraDespOrig = ?, DocumentoOriginal = ?, FechaOperacionOrig = ?, FraccionOriginal = ?, UnidadMedida = ?, MercanciaDescargada = ?, "
                 + "TipoPedimento = ?, FechaPagoReal = ? WHERE ID = ?;";

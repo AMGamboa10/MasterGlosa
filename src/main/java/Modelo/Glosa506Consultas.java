@@ -87,7 +87,7 @@ public class Glosa506Consultas extends Conexion {
         String Patente, Pedimento, SeccionAduanera;
         java.sql.Date TipoFecha, FechaOperacion, FechaValidacionPagoR;
 
-        String sql = "Select * from Glosa506 Where FechaPago >= ? and FechaPago <=?;";
+        String sql = "Select * from Glosa506 Where FechaValidacionPagoR >= ? and FechaValidacionPagoR <=?;";
 
         ArrayList<Glosa506> lista = new ArrayList<>();
 

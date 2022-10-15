@@ -98,7 +98,7 @@ public class Glosa508Consultas extends Conexion {
         double ValorUnitarioTitulo;
         java.sql.Date FechaPagoReal, FechaConstancia;
 
-        String sql = "Select * from Glosa508 Where FechaPago >= ? and FechaPago <=?;";
+        String sql = "Select * from Glosa508 Where FechaPagoReal >= ? and FechaPagoReal <=?;";
 
         ArrayList<Glosa508> lista = new ArrayList<>();
 

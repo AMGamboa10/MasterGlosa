@@ -3028,7 +3028,7 @@
                     <Property name="useNullLayout" type="boolean" value="false"/>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JButton" name="btnexportarExcelCFGlosa502">
+                    <Component class="javax.swing.JButton" name="btnexportarExcelAdministrar">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="41" green="7c" red="10" type="rgb"/>
