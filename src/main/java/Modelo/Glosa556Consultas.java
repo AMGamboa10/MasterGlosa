@@ -27,11 +27,11 @@ public class Glosa556Consultas extends Conexion {
             ps.setString(4, glosa556.getFraccion());
             ps.setString(5, glosa556.getSecuenciaFraccion());
             ps.setString(6, glosa556.getClaveContribucion());
-            ps.setString(7, glosa556.getTasaContribucion());
+            ps.setDouble(7, glosa556.getTasaContribucion());
             ps.setString(8, glosa556.getTipoTasa());
             ps.setDate(9, glosa556.getFechaPagoReal());
-
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {
@@ -89,8 +89,9 @@ public class Glosa556Consultas extends Conexion {
         Connection con = getConexion();
         //Declarar todos nuestros campos de glsoa como variables
         int id;
-        String Patente, Pedimento, SeccionAduanera, Fraccion, SecuenciaFraccion, ClaveContribucion, TasaContribucion, TipoTasa;
+        String Patente, Pedimento, SeccionAduanera, Fraccion, SecuenciaFraccion, ClaveContribucion, TipoTasa;
         java.sql.Date FechaPagoReal;
+        double TasaContribucion;
 
         String sql = "Select * from Glosa556 Where FechaPagoReal >= ? and FechaPagoReal <=?;";
 
@@ -111,7 +112,7 @@ public class Glosa556Consultas extends Conexion {
                 Fraccion = rs.getString("Fraccion");
                 SecuenciaFraccion = rs.getString("SecuenciaFraccion");
                 ClaveContribucion = rs.getString("ClaveContribucion");
-                TasaContribucion = rs.getString("TasaContribucion");
+                TasaContribucion = rs.getDouble("TasaContribucion");
                 TipoTasa = rs.getString("TipoTasa");
                 FechaPagoReal = rs.getDate("FechaPagoReal");
 
@@ -147,7 +148,7 @@ public class Glosa556Consultas extends Conexion {
             ps.setString(4, glosa556.getFraccion());
             ps.setString(5, glosa556.getSecuenciaFraccion());
             ps.setString(6, glosa556.getClaveContribucion());
-            ps.setString(7, glosa556.getTasaContribucion());
+            ps.setDouble(7, glosa556.getTasaContribucion());
             ps.setString(8, glosa556.getTipoTasa());
             ps.setDate(9, glosa556.getFechaPagoReal());
             ps.setInt(10, glosa556.getId());

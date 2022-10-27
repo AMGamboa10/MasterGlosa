@@ -13,14 +13,18 @@ public class Conexion {
     private final String url = "jdbc:mysql://MX1STNJY4F7G3:3306/" + base + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private Connection con = null;
     //Comentarios
+    
     public Connection getConexion(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(this.url, this.user, this.password);
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-        } catch (ClassNotFoundException ex) {
+        } 
+        catch (ClassNotFoundException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            
         }
         return con;
     }

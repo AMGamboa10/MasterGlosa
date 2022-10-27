@@ -34,8 +34,8 @@ public class Glosa520Consultas extends Conexion {
             ps.setString(10, glosa520.getMunicpioDestinatario());
             ps.setString(11, glosa520.getPaisDestinatario());
             ps.setDate(12, glosa520.getFechaPagoReal());
-
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {

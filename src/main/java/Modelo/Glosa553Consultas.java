@@ -32,8 +32,8 @@ public class Glosa553Consultas extends Conexion {
             ps.setDouble(9, glosa553.getValorComercialDolares());
             ps.setDouble(10, glosa553.getCantidadMUMTarifa());
             ps.setDate(11, glosa553.getFechaPagoReal());
-
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {

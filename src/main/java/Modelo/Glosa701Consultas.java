@@ -36,8 +36,8 @@ public class Glosa701Consultas extends Conexion {
             ps.setString(12, glosa701.getPatenteAduanalOrig());
             ps.setString(13, glosa701.getSeccionAduanalDespOrig());
             ps.setDate(14, glosa701.getFechaPagoReal());
-
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {

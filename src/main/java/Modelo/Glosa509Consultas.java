@@ -29,8 +29,8 @@ public class Glosa509Consultas extends Conexion {
             ps.setString(6, glosa509.getTipoTasa());
             ps.setString(7, glosa509.getTipoPedimento());
             ps.setDate(8, glosa509.getFechaPagoReal());
-
             ps.execute();
+            con.close();
 
             return true;
 

@@ -29,8 +29,8 @@ public class Glosa510Consultas extends Conexion {
             ps.setDouble(6, glosa510.getImportePago());
             ps.setString(7, glosa510.getTipoPedimento());
             ps.setDate(8, glosa510.getFechaPagoReal());
-            
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {

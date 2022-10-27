@@ -27,6 +27,7 @@ public class Glosa503Consultas extends Conexion {
             ps.setString(5, glosa503.getTipoGuia());
             ps.setDate(6, glosa503.getFechaPagoReal());
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {

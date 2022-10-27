@@ -27,9 +27,10 @@ public class Glosa552Consultas extends Conexion {
             ps.setString(4, glosa552.getFraccion());
             ps.setString(5, glosa552.getSecuenciaFraccion());
             ps.setString(6, glosa552.getVinNumeroSerie());
-            ps.setDouble(8, glosa552.getKilometrajeVehiculo());
-            ps.setDate(9, glosa552.getFechaPagoReal());
+            ps.setDouble(7, glosa552.getKilometrajeVehiculo());
+            ps.setDate(8, glosa552.getFechaPagoReal());
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {

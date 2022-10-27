@@ -29,8 +29,8 @@ public class Glosa702Consultas extends Conexion {
             ps.setDouble(6, glosa702.getImportePago());
             ps.setString(7, glosa702.getTipoPedimento());
             ps.setDate(8, glosa702.getFechaPagoReal());
-
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {

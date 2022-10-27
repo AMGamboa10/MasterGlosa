@@ -23,10 +23,11 @@ public class Glosa506Consultas extends Conexion {
             ps.setString(1, glosa506.getPatente());
             ps.setString(2, glosa506.getPedimento());
             ps.setString(3, glosa506.getSeccionAduanera());
-            ps.setDate(4, glosa506.getTipoFecha());
+            ps.setString(4, glosa506.getTipoFecha());
             ps.setDate(5, glosa506.getFechaOperacion());
             ps.setDate(6, glosa506.getFechaValidacionPagoR());
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {
@@ -84,8 +85,8 @@ public class Glosa506Consultas extends Conexion {
         Connection con = getConexion();
         //Declarar todos nuestros campos de glsoa como variables
         int id;
-        String Patente, Pedimento, SeccionAduanera;
-        java.sql.Date TipoFecha, FechaOperacion, FechaValidacionPagoR;
+        String Patente, Pedimento, SeccionAduanera, TipoFecha;
+        java.sql.Date FechaOperacion, FechaValidacionPagoR;
 
         String sql = "Select * from Glosa506 Where FechaValidacionPagoR >= ? and FechaValidacionPagoR <=?;";
 
@@ -103,7 +104,7 @@ public class Glosa506Consultas extends Conexion {
                 Patente = rs.getString("Patente");
                 Pedimento = rs.getString("Pedimento");
                 SeccionAduanera = rs.getString("SeccionAduanera");
-                TipoFecha = rs.getDate("TipoFecha");
+                TipoFecha = rs.getString("TipoFecha");
                 FechaOperacion = rs.getDate("FechaOperacion");
                 FechaValidacionPagoR = rs.getDate("FechaValidacionPagoR");
 
@@ -135,7 +136,7 @@ public class Glosa506Consultas extends Conexion {
             ps.setString(1, glosa506.getPatente());
             ps.setString(2, glosa506.getPedimento());
             ps.setString(3, glosa506.getSeccionAduanera());
-            ps.setDate(4, glosa506.getTipoFecha());
+            ps.setString(4, glosa506.getTipoFecha());
             ps.setDate(5, glosa506.getFechaOperacion());
             ps.setDate(6, glosa506.getFechaValidacionPagoR());
             ps.setInt(7, glosa506.getId());

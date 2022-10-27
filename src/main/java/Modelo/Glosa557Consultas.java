@@ -30,8 +30,8 @@ public class Glosa557Consultas extends Conexion {
             ps.setString(7, glosa557.getFormaPago());
             ps.setDouble(8, glosa557.getImportPago());
             ps.setDate(9, glosa557.getFechaValidacionPagoR());
-
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {

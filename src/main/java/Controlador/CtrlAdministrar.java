@@ -48,21 +48,35 @@ import Modelo.Glosa701Consultas;
 import Modelo.Glosa702;
 import Modelo.Glosa702Consultas;
 import Vista.PanelPrincipal;
+import Vista.PopUpInsertarGlosaComprimido;
 import java.awt.Desktop;
 import org.apache.poi.ss.usermodel.Row;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -71,6 +85,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class CtrlAdministrar implements ActionListener {
 
     private PanelPrincipal frmPrincipal;
+    private PopUpInsertarGlosaComprimido frmPopUpInsertarGlosa;
     private Glosa501 modGlosa501;
     private Glosa501Consultas modcGlosa501;
     private Glosa502 modGlosa502;
@@ -118,8 +133,9 @@ public class CtrlAdministrar implements ActionListener {
     private Glosa702 modGlosa702;
     private Glosa702Consultas modcGlosa702;
     private Consultas modcConsultas;
+    public int tipoCargaGlosa = 0;
 
-    public CtrlAdministrar(PanelPrincipal frmPrincipal, Glosa501 modGlosa501, Glosa501Consultas modcGlosa501, Glosa502 modGlosa502, 
+    public CtrlAdministrar(PanelPrincipal frmPrincipal, PopUpInsertarGlosaComprimido frmPopUpInsertarGlosa, Glosa501 modGlosa501, Glosa501Consultas modcGlosa501, Glosa502 modGlosa502, 
             Glosa502Consultas modcGlosa502, Glosa503 modGlosa503, Glosa503Consultas modcGlosa503, Glosa504 modGlosa504, Glosa504Consultas modcGlosa504, 
             Glosa505 modGlosa505, Glosa505Consultas modcGlosa505, Glosa506 modGlosa506, Glosa506Consultas modcGlosa506, Glosa507 modGlosa507, 
             Glosa507Consultas modcGlosa507, Glosa508 modGlosa508, Glosa508Consultas modcGlosa508, Glosa509 modGlosa509, Glosa509Consultas modcGlosa509, 
@@ -130,6 +146,7 @@ public class CtrlAdministrar implements ActionListener {
             Glosa557 modGlosa557, Glosa557Consultas modcGlosa557, Glosa558 modGlosa558, Glosa558Consultas modcGlosa558, Glosa701 modGlosa701, 
             Glosa701Consultas modcGlosa701, Glosa702 modGlosa702, Glosa702Consultas modcGlosa702, Consultas modcConsultas) {
         this.frmPrincipal = frmPrincipal;
+        this.frmPopUpInsertarGlosa = frmPopUpInsertarGlosa;
         this.modGlosa501 = modGlosa501;
         this.modcGlosa501 = modcGlosa501;
         this.modGlosa502 = modGlosa502;
@@ -179,6 +196,10 @@ public class CtrlAdministrar implements ActionListener {
         this.modcConsultas = modcConsultas;
         this.frmPrincipal.btnBuscarAdministrarGlosa.addActionListener(this);
         this.frmPrincipal.btnexportarExcelAdministrar.addActionListener(this);
+        this.frmPrincipal.btnCargarComprimidoAdministrarGlosa.addActionListener(this);
+        this.frmPrincipal.btnCargarIndividualAdministrarGlosa.addActionListener(this);
+        this.frmPopUpInsertarGlosa.btnAceptarPopUpInsertarGlosa.addActionListener(this);
+        this.frmPopUpInsertarGlosa.btnCancelarpopInsertarGlosa.addActionListener(this);
     }
 
     
@@ -194,6 +215,8 @@ public class CtrlAdministrar implements ActionListener {
         
         switch(glosa){
             case "Glosa501":
+                modGlosa501.setFechaInicio(fechaInicial);
+                modGlosa501.setFechaFinal(fechaFinal);
                 ArrayList<Glosa501> lista501 = modcGlosa501.buscar(modGlosa501);
                 String matris[][] = new String[lista501.size()][32];
                 
@@ -230,7 +253,7 @@ public class CtrlAdministrar implements ActionListener {
                     matris[i][29] = lista501.get(i).getTipoPedimento();
                     matris[i][30] = String.valueOf(lista501.get(i).getFechaRecepcionPedimento());
                     matris[i][31] = String.valueOf(lista501.get(i).getFechaPagoReal());
-                    
+
                 }
                 
                 frmPrincipal.jtableAdministrarGlosa.setModel(new javax.swing.table.DefaultTableModel(
@@ -246,7 +269,8 @@ public class CtrlAdministrar implements ActionListener {
                 
                 break;
             case "Glosa502":
-                
+                modGlosa502.setFechaInicio(fechaInicial);
+                modGlosa502.setFechaFinal(fechaFinal);
                 ArrayList<Glosa502> lista502 = modcGlosa502.buscar(modGlosa502);
                 String matris502[][] = new String[lista502.size()][10];
                 
@@ -274,6 +298,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa503":
+                modGlosa503.setFechaInicio(fechaInicial);
+                modGlosa503.setFechaFinal(fechaFinal);
                 ArrayList<Glosa503> lista503 = modcGlosa503.buscar(modGlosa503);
                 String matris503[][] = new String[lista503.size()][7];
                 
@@ -295,7 +321,8 @@ public class CtrlAdministrar implements ActionListener {
                 ));
                 break;
             case "Glosa504":
-                
+                modGlosa504.setFechaInicio(fechaInicial);
+                modGlosa504.setFechaFinal(fechaFinal);
                 ArrayList<Glosa504> lista504 = modcGlosa504.buscar(modGlosa504);
                 String matris504[][] = new String[lista504.size()][7];
                 
@@ -318,6 +345,8 @@ public class CtrlAdministrar implements ActionListener {
                 
                 break;
             case "Glosa505":
+                modGlosa505.setFechaInicio(fechaInicial);
+                modGlosa505.setFechaFinal(fechaFinal);
                 ArrayList<Glosa505> lista505 = modcGlosa505.buscar(modGlosa505);
                 String matris505[][] = new String[lista505.size()][20];
                 
@@ -356,6 +385,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa506":
+                modGlosa506.setFechaInicio(fechaInicial);
+                modGlosa506.setFechaFinal(fechaFinal);
                 ArrayList<Glosa506> lista506 = modcGlosa506.buscar(modGlosa506);
                 String matris506[][] = new String[lista506.size()][7];
                 
@@ -379,6 +410,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa507":
+                modGlosa507.setFechaInicio(fechaInicial);
+                modGlosa507.setFechaFinal(fechaFinal);
                 ArrayList<Glosa507> lista507 = modcGlosa507.buscar(modGlosa507);
                 String matris507[][] = new String[lista507.size()][9];
                 
@@ -404,6 +437,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa508":
+                modGlosa508.setFechaInicio(fechaInicial);
+                modGlosa508.setFechaFinal(fechaFinal);
                 ArrayList<Glosa508> lista508 = modcGlosa508.buscar(modGlosa508);
                 String matris508[][] = new String[lista508.size()][15];
                 
@@ -436,6 +471,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa509":
+                modGlosa509.setFechaInicio(fechaInicial);
+                modGlosa509.setFechaFinal(fechaFinal);
                 ArrayList<Glosa509> lista509 = modcGlosa509.buscar(modGlosa509);
                 String matris509[][] = new String[lista509.size()][9];
                 
@@ -461,6 +498,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa510":
+                modGlosa510.setFechaInicio(fechaInicial);
+                modGlosa510.setFechaFinal(fechaFinal);
                 ArrayList<Glosa510> lista510 = modcGlosa510.buscar(modGlosa510);
                 String matris510[][] = new String[lista510.size()][9];
                 
@@ -487,6 +526,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa511":
+                modGlosa511.setFechaInicio(fechaInicial);
+                modGlosa511.setFechaFinal(fechaFinal);
                 ArrayList<Glosa511> lista511 = modcGlosa511.buscar(modGlosa511);
                 String matris511[][] = new String[lista511.size()][8];
                 
@@ -510,6 +551,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa512":
+                modGlosa512.setFechaInicio(fechaInicial);
+                modGlosa512.setFechaFinal(fechaFinal);
                 ArrayList<Glosa512> lista512 = modcGlosa512.buscar(modGlosa512);
                 String matris512[][] = new String[lista512.size()][14];
                 
@@ -543,6 +586,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa520":
+                modGlosa520.setFechaInicio(fechaInicial);
+                modGlosa520.setFechaFinal(fechaFinal);
                 ArrayList<Glosa520> lista520 = modcGlosa520.buscar(modGlosa520);
                 String matris520[][] = new String[lista520.size()][13];
                 
@@ -574,6 +619,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa551":
+                modGlosa551.setFechaInicio(fechaInicial);
+                modGlosa551.setFechaFinal(fechaFinal);
                 ArrayList<Glosa551> lista551 = modcGlosa551.buscar(modGlosa551);
                 String matris551[][] = new String[lista551.size()][31];
                 
@@ -625,6 +672,8 @@ public class CtrlAdministrar implements ActionListener {
                 ));
                 break;
             case "Glosa552":
+                modGlosa552.setFechaInicio(fechaInicial);
+                modGlosa552.setFechaFinal(fechaFinal);
                 ArrayList<Glosa552> lista552 = modcGlosa552.buscar(modGlosa552);
                 String matris552[][] = new String[lista552.size()][9];
                 
@@ -650,6 +699,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa553":
+                modGlosa553.setFechaInicio(fechaInicial);
+                modGlosa553.setFechaFinal(fechaFinal);
                 ArrayList<Glosa553> lista553 = modcGlosa553.buscar(modGlosa553);
                 String matris553[][] = new String[lista553.size()][12];
                 
@@ -680,6 +731,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa554":
+                modGlosa554.setFechaInicio(fechaInicial);
+                modGlosa554.setFechaFinal(fechaFinal);
                 ArrayList<Glosa554> lista554 = modcGlosa554.buscar(modGlosa554);
                 String matris554[][] = new String[lista554.size()][10];
                 
@@ -706,6 +759,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa555":
+                modGlosa555.setFechaInicio(fechaInicial);
+                modGlosa555.setFechaFinal(fechaFinal);
                 ArrayList<Glosa555> lista555 = modcGlosa555.buscar(modGlosa555);
                 String matris555[][] = new String[lista555.size()][16];
                 
@@ -740,6 +795,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa556":
+                modGlosa556.setFechaInicio(fechaInicial);
+                modGlosa556.setFechaFinal(fechaFinal);
                 ArrayList<Glosa556> lista556 = modcGlosa556.buscar(modGlosa556);
                 String matris556[][] = new String[lista556.size()][10];
                 
@@ -751,7 +808,7 @@ public class CtrlAdministrar implements ActionListener {
                     matris556[i][4] = lista556.get(i).getFraccion();
                     matris556[i][5] = lista556.get(i).getSecuenciaFraccion();
                     matris556[i][6] = lista556.get(i).getClaveContribucion();
-                    matris556[i][7] = lista556.get(i).getTasaContribucion();
+                    matris556[i][7] = String.valueOf(lista556.get(i).getTasaContribucion());
                     matris556[i][8] = lista556.get(i).getTipoTasa();
                     matris556[i][9] = String.valueOf(lista556.get(i).getFechaPagoReal());
                     
@@ -767,6 +824,8 @@ public class CtrlAdministrar implements ActionListener {
                 break;
                 
             case "Glosa557":
+                modGlosa557.setFechaInicio(fechaInicial);
+                modGlosa557.setFechaFinal(fechaFinal);
                 ArrayList<Glosa557> lista557 = modcGlosa557.buscar(modGlosa557);
                 String matris557[][] = new String[lista557.size()][10];
                 
@@ -792,6 +851,8 @@ public class CtrlAdministrar implements ActionListener {
                 ));
                 break;
             case "Glosa558":
+                modGlosa558.setFechaInicio(fechaInicial);
+                modGlosa558.setFechaFinal(fechaFinal);
                 ArrayList<Glosa558> lista558 = modcGlosa558.buscar(modGlosa558);
                 String matris558[][] = new String[lista558.size()][9];
                 
@@ -816,6 +877,8 @@ public class CtrlAdministrar implements ActionListener {
                 ));
                 break;
             case "Glosa701":
+                modGlosa701.setFechaInicio(fechaInicial);
+                modGlosa701.setFechaFinal(fechaFinal);
                 ArrayList<Glosa701> lista701 = modcGlosa701.buscar(modGlosa701);
                 String matris701[][] = new String[lista701.size()][15];
                 
@@ -848,6 +911,8 @@ public class CtrlAdministrar implements ActionListener {
                 ));
                 break;
             case "Glosa702":
+                modGlosa702.setFechaInicio(fechaInicial);
+                modGlosa702.setFechaFinal(fechaFinal);
                 ArrayList<Glosa702> lista702 = modcGlosa702.buscar(modGlosa702);
                 String matris702[][] = new String[lista702.size()][10];
                 
@@ -878,14 +943,15 @@ public class CtrlAdministrar implements ActionListener {
     }
     
     public void exportarGlosaExcel(DefaultTableModel model){
+        String glosa = frmPrincipal.cmbGlosaAdministrarGlosa.getSelectedItem().toString();
+        
         Workbook book = new XSSFWorkbook();
-        Sheet sheet = book.createSheet("TXT");
+        Sheet sheet = book.createSheet(glosa);
         
         model = (DefaultTableModel) frmPrincipal.jtableAdministrarGlosa.getModel();
         
         //Cramos nuestra primer fila
         Row row1 = sheet.createRow(0);
-        String glosa = frmPrincipal.cmbGlosaAdministrarGlosa.getSelectedItem().toString();
         //Consultamos los nombres de columnas y los ponemos en una lista
         ArrayList<String> listaEncabezados = modcConsultas.buscarEncabezadosGlosa(glosa);
         
@@ -899,15 +965,11 @@ public class CtrlAdministrar implements ActionListener {
                 row.createCell(y).setCellValue(model.getValueAt(i, y).toString());
             }            
         }
-        
+            
         String time = DateTimeFormatter.ofPattern("yyMMdd-hhmmss").format(LocalDateTime.now());
         String ruta = "O:\\Mexico\\Trade Compliance\\GLOSA\\REPORTEADORGLOSA\\Reportes\\";
-        String fechaInicial = String.valueOf(frmPrincipal.datechFechaInicialAdministrarGlosa.getDate());
-        String fechaFinal = String.valueOf(frmPrincipal.datechFechaFinalAdministrarGlosa.getDate());
         
-        String nombreArchivo = glosa + fechaInicial + "-" + fechaFinal + ""
-                + ".xlsx";
-        
+        String nombreArchivo = glosa + " " + time + ".xlsx";
         try {
             FileOutputStream fileout = new FileOutputStream(ruta + nombreArchivo);
             book.write(fileout);
@@ -923,7 +985,1905 @@ public class CtrlAdministrar implements ActionListener {
         }
         
     }
-   
+    
+    private static final int BUFFER_SIZE = 4096;
+    
+    public static void unzip(String ZipFilePath, String DestFilePath) throws IOException {
+        File Destination_Directory = new File(DestFilePath);
+        if (!Destination_Directory.exists()) {
+        	Destination_Directory.mkdirs();
+        }
+        ZipInputStream Zip_Input_Stream = new ZipInputStream(new FileInputStream(ZipFilePath));
+        ZipEntry Zip_Entry = Zip_Input_Stream.getNextEntry();
+
+        while (Zip_Entry != null) {
+            String File_Path = DestFilePath + File.separator + Zip_Entry.getName();
+            if (!Zip_Entry.isDirectory()) {
+
+                extractFile(Zip_Input_Stream, File_Path);
+            } else {
+
+                File directory = new File(File_Path);
+                directory.mkdirs();
+            }
+            Zip_Input_Stream.closeEntry();
+            Zip_Entry = Zip_Input_Stream.getNextEntry();
+        }
+        Zip_Input_Stream.close();
+    }
+
+    private static void extractFile(ZipInputStream Zip_Input_Stream, String File_Path) throws IOException {
+        BufferedOutputStream Buffered_Output_Stream = new BufferedOutputStream(new FileOutputStream(File_Path));
+        byte[] Bytes = new byte[BUFFER_SIZE];
+        int Read_Byte = 0;
+        while ((Read_Byte = Zip_Input_Stream.read(Bytes)) != -1) {
+        	Buffered_Output_Stream.write(Bytes, 0, Read_Byte);
+        }
+        Buffered_Output_Stream.close();
+    }
+
+    public void extraerZip() throws IOException {
+    	JFileChooser fc = new JFileChooser("O:\\Mexico\\Trade Compliance\\GLOSA");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.zip", "zip");
+        fc.setFileFilter(filtro);
+        fc.showOpenDialog(null);
+        File fileZip = fc.getSelectedFile();
+        
+        String ZipFilePath = fileZip.getAbsolutePath();
+        
+        String año = frmPopUpInsertarGlosa.cmbAñopopInsertarGlosa.getSelectedItem().toString();
+        String mes = frmPopUpInsertarGlosa.cmbMespopInsertarGlosa.getSelectedItem().toString();
+        String numMes = numeroMes(frmPopUpInsertarGlosa.cmbMespopInsertarGlosa.getSelectedItem().toString());
+        
+    	String DestFilePath = "O:\\Mexico\\Trade Compliance\\GLOSA\\GLOSAPRUEBA" 
+                + año + "\\" +numMes + " " + mes + " " + año + "\\" + fileZip.getName().substring(1,fileZip.getName().indexOf("."));
+    	unzip(ZipFilePath, DestFilePath);
+        System.out.println("Zip File extracted Successfully");
+        insertarGlosaComprimido(DestFilePath);
+    }
+    
+    //Listamos los archivos de nuestra carpeta descomprimida para poder leerlo
+    public void insertarGlosaComprimido(String GlosaPath){
+        File carpeta = new File(GlosaPath);
+        String[] listado = carpeta.list();
+        
+        if (listado == null || listado.length == 0) {
+            System.out.println("No hay elementos dentro de la carpeta actual");
+            JOptionPane.showMessageDialog(null, "No hay elementos dentro de la carpeta actual: " + GlosaPath);
+            return;
+        }
+        else {
+            for (int i=0; i< listado.length; i++) {
+                String glosa = listado[i].substring(listado[i].indexOf("_") + 1, listado[i].indexOf("_") + 4);
+                File file = new File(GlosaPath + "\\" +listado[i]);
+                seleccionarGlosa(file, glosa);
+            }
+            JOptionPane.showMessageDialog(null, "Carga completada");
+            
+        }
+    }
+    
+    public void insertarGlosaIndividual(){
+        JFileChooser fc = new JFileChooser("O:\\Mexico\\Trade Compliance\\GLOSA");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.txt, .asc", "txt", "asc");
+        fc.setFileFilter(filtro);
+        fc.showOpenDialog(null);
+        File file = fc.getSelectedFile();
+        String glosa = file.getName().substring(file.getName().indexOf("_") + 1, file.getName().indexOf("_") + 4);
+        seleccionarGlosa(file, glosa);
+        JOptionPane.showMessageDialog(null, "Carga completada");
+        
+    }
+    
+    public void seleccionarGlosa(File file, String glosaNombre){
+        
+        switch (glosaNombre) {
+            case "501":
+                try {
+                insertarGlosa501(file);
+                System.out.println("Insertado Glosa 501 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "502":
+                        try {
+                insertarGlosa502(file);
+                System.out.println("Insertado Glosa 502 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "503":
+                        try {
+                insertarGlosa503(file);
+                System.out.println("Insertado Glosa 503 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "504":
+                        try {
+                insertarGlosa504(file);
+                System.out.println("Insertado Glosa 504 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "505":
+                        try {
+                insertarGlosa505(file);
+                System.out.println("Insertado Glosa 505 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "506":
+                        try {
+                insertarGlosa506(file);
+                System.out.println("Insertado Glosa 506 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "507":
+                        try {
+                insertarGlosa507(file);
+                System.out.println("Insertado Glosa 507 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "508":
+                        try {
+                insertarGlosa508(file);
+                System.out.println("Insertado Glosa 508 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "509":
+                        try {
+                insertarGlosa509(file);
+                System.out.println("Insertado Glosa 509 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "510":
+                        try {
+                insertarGlosa510(file);
+                System.out.println("Insertado Glosa 510 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "511":
+                        try {
+                insertarGlosa511(file);
+                System.out.println("Insertado Glosa 511 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "512":
+                        try {
+                insertarGlosa512(file);
+                System.out.println("Insertado Glosa 512 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "520":
+                        try {
+                insertarGlosa520(file);
+                System.out.println("Insertado Glosa 520 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "551":
+                        try {
+                insertarGlosa551(file);
+                System.out.println("Insertado Glosa 551 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "552":
+                        try {
+                insertarGlosa552(file);
+                System.out.println("Insertado Glosa 552 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "553":
+                        try {
+                insertarGlosa553(file);
+                System.out.println("Insertado Glosa 553 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "554":
+                        try {
+                insertarGlosa554(file);
+                System.out.println("Insertado Glosa 554 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "555":
+                        try {
+                insertarGlosa555(file);
+                System.out.println("Insertado Glosa 555 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "556":
+                        try {
+                insertarGlosa556(file);
+                System.out.println("Insertado Glosa 556 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "557":
+                        try {
+                insertarGlosa557(file);
+                System.out.println("Insertado Glosa 557 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "558":
+                        try {
+                insertarGlosa558(file);
+                System.out.println("Insertado Glosa 558 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "701":
+                        try {
+                insertarGlosa701(file);
+                System.out.println("Insertado Glosa 701 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+            case "702":
+                        try {
+                insertarGlosa702(file);
+                System.out.println("Insertado Glosa 702 terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
+        }
+    }
+    
+    public void insertarGlosa501(File file) throws IOException{
+        
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+        String linea = "";
+        String patente, pedimento, seccionAduanera, tipoOperacion, claveDocumento, seccionAduaneraEntrada, curpContribuyente,
+                    rfc, curpAgenteA, medioTransporteSalida, medioTransporteArribo, medioTransporteEntrada_Salida, destinoMercancia, nombreContribuyente, calleContribuyente,
+                    numeroContribuyente, numExteriorContribuyente, cpContribuyente, municipioContribuyente, entidadFedContribuyente, paisContribuyente,
+                    tipoPedimento, fechaRecepcionPedimento, fechaPagoReal;
+        Double tipoCambio, pesoBrutoMercancia;
+        int totalFletes, totalSeguros, totalEmbalajes, totalIncrementables, totalDeducibles;
+        SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoOperacion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                claveDocumento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduaneraEntrada = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                curpContribuyente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                rfc = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                curpAgenteA = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoCambio = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                totalFletes = Integer.parseInt(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                totalSeguros = Integer.parseInt(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                totalEmbalajes = Integer.parseInt(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                totalIncrementables = Integer.parseInt(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                totalDeducibles = Integer.parseInt(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pesoBrutoMercancia = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                medioTransporteSalida = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                medioTransporteArribo = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                medioTransporteEntrada_Salida = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                destinoMercancia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                nombreContribuyente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                calleContribuyente = linea.substring(0, linea.indexOf('|'));linea = linea.substring(linea.indexOf('|') + 1);
+                numeroContribuyente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                numExteriorContribuyente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                cpContribuyente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                municipioContribuyente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                entidadFedContribuyente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                paisContribuyente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoPedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaRecepcionPedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaPagoReal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa501.setPatente(patente);
+                modGlosa501.setPedimento(pedimento);
+                modGlosa501.setSeccionAduanera(seccionAduanera);
+                modGlosa501.setTipoOperacion(tipoOperacion);
+                modGlosa501.setClaveDocumento(claveDocumento);
+                modGlosa501.setSeccionAduaneraEntrada(seccionAduaneraEntrada);
+                modGlosa501.setCurpContribuyente(curpContribuyente);
+                modGlosa501.setRfc(rfc);
+                modGlosa501.setCurpAgenteA(curpAgenteA);
+                modGlosa501.setTipoCambio(tipoCambio);
+                modGlosa501.setTotalFletes(totalFletes);
+                modGlosa501.setTotalSeguros(totalSeguros);
+                modGlosa501.setTotalEmbalajes(totalEmbalajes);
+                modGlosa501.setTotalIncrementables(totalIncrementables);
+                modGlosa501.setTotalDeducibles(totalDeducibles);
+                modGlosa501.setPesoBrutoMercancia(pesoBrutoMercancia);
+                modGlosa501.setMedioTransporteSalida(medioTransporteSalida);
+                modGlosa501.setMedioTransporteArribo(medioTransporteArribo);
+                modGlosa501.setMedioTransporteEntrada_Salida(medioTransporteEntrada_Salida);
+                modGlosa501.setDestinoMercancia(destinoMercancia);
+                modGlosa501.setNombreContribuyente(nombreContribuyente);
+                modGlosa501.setCalleContribuyente(calleContribuyente);
+                modGlosa501.setNumeroContribuyente(numeroContribuyente);
+                modGlosa501.setNumExteriorContribuyente(numExteriorContribuyente);
+                modGlosa501.setCPContribuyente(cpContribuyente);
+                modGlosa501.setMunicipioContribuyente(municipioContribuyente);
+                modGlosa501.setEntidadFedContribuyente(entidadFedContribuyente);
+                modGlosa501.setPaisContribuyente(paisContribuyente);
+                modGlosa501.setTipoPedimento(tipoPedimento);
+                Date parsed = dateFormatSQL.parse(fechaRecepcionPedimento);
+                java.sql.Date fechaRecepcionPedimentoSQL = new java.sql.Date(parsed.getTime());
+                modGlosa501.setFechaRecepcionPedimento(fechaRecepcionPedimentoSQL);
+                Date parsed1 = dateFormatSQL.parse(fechaPagoReal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa501.setFechaPagoReal(fechaPagoRealSQL);
+                modcGlosa501.registrar(modGlosa501);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa502(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+        String linea = "";
+        String patente, pedimento, seccionAduanera, rfcTransportista, curpTransportista, nombreTransportista, paisTransporte, identificadorTransporte, fechaPagoReal;
+        SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                rfcTransportista = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                curpTransportista = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                nombreTransportista = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                paisTransporte = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                identificadorTransporte = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaPagoReal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa502.setPatente(patente);
+                modGlosa502.setPedimento(pedimento);
+                modGlosa502.setSeccionAduanera(seccionAduanera);
+                modGlosa502.setRfcTransportista(rfcTransportista);
+                modGlosa502.setCurpTransportista(curpTransportista);
+                modGlosa502.setNombreTransportista(nombreTransportista);
+                modGlosa502.setPaisTransporte(paisTransporte);
+                modGlosa502.setIdentificadorTransporte(identificadorTransporte);
+                Date parsed1 = dateFormatSQL.parse(fechaPagoReal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa502.setFechaPagoReal(fechaPagoRealSQL);
+                modcGlosa502.registrar(modGlosa502);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa503(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+        String linea = "";
+        String patente, pedimento, seccionAduanera, numeroGuia, tipoGuia, fechaPagoReal;
+        
+        SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                numeroGuia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoGuia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaPagoReal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa503.setPatente(patente);
+                modGlosa503.setPedimento(pedimento);
+                modGlosa503.setSeccionAduanera(seccionAduanera);
+                modGlosa503.setNumeroGuia(numeroGuia);
+                modGlosa503.setTipoGuia(tipoGuia);
+                Date parsed1 = dateFormatSQL.parse(fechaPagoReal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa503.setFechaPagoReal(fechaPagoRealSQL);
+                modcGlosa503.registrar(modGlosa503);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa504(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, numContenedor, tipoContenedor, fechaPagoReal;
+        
+        SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                numContenedor = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoContenedor = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaPagoReal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa504.setPatente(patente);
+                modGlosa504.setPedimento(pedimento);
+                modGlosa504.setSeccionAduanera(seccionAduanera);
+                modGlosa504.setNumContenedor(numContenedor);
+                modGlosa504.setTipoContenedor(tipoContenedor);
+                Date parsed1 = dateFormatSQL.parse(fechaPagoReal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa504.setFechaPagoReal(fechaPagoRealSQL);
+                modcGlosa504.registrar(modGlosa504);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa505(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, numeroFactura, terminoFacturacion, monedaFacturacion, paisFacturacion, entidadFedFacturacion,
+                    indentFiscalProveedor, proveedorMercancia, calleProveedor, numInteriorProveedor, numExteriorProveedor,
+                    cpProveedor, municipioProveedor, fechaPagoReal, FechaFacturacion;
+            Double valorDolares, valorMonedaExtranjera;
+            
+        
+        SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                
+                FechaFacturacion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                numeroFactura = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                terminoFacturacion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                monedaFacturacion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                valorDolares = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                valorMonedaExtranjera = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                paisFacturacion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                entidadFedFacturacion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                indentFiscalProveedor = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                proveedorMercancia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                calleProveedor = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                numInteriorProveedor = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                numExteriorProveedor = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                cpProveedor = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                municipioProveedor = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                
+                fechaPagoReal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa505.setPatente(patente);
+                modGlosa505.setPedimento(pedimento);
+                modGlosa505.setSeccionAduanera(seccionAduanera);
+                Date parsed2 = dateFormatSQL.parse(FechaFacturacion);
+                java.sql.Date fechaFacturacionSQL = new java.sql.Date(parsed2.getTime());
+                modGlosa505.setFechaFacturacion(fechaFacturacionSQL);
+                modGlosa505.setNumeroFactura(numeroFactura);
+                modGlosa505.setTerminoFacturacion(terminoFacturacion);
+                modGlosa505.setMonedaFacturacion(monedaFacturacion);
+                modGlosa505.setValorDolares(valorDolares);
+                modGlosa505.setValorMonedaExtranjera(valorMonedaExtranjera);
+                modGlosa505.setPaisFacturacion(paisFacturacion);
+                modGlosa505.setEntidadFedFacturacion(entidadFedFacturacion);
+                modGlosa505.setIndentFiscalProveedor(indentFiscalProveedor);
+                modGlosa505.setProveedorMercancia(proveedorMercancia);
+                modGlosa505.setCalleProveedor(calleProveedor);
+                modGlosa505.setNumInteriorProveedor(numInteriorProveedor);
+                modGlosa505.setNumExteriorProveedor(numExteriorProveedor);
+                modGlosa505.setCpProveedor(cpProveedor);
+                modGlosa505.setMunicipioProveedor(municipioProveedor);
+                Date parsed1 = dateFormatSQL.parse(fechaPagoReal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa505.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa505.registrar(modGlosa505);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa506(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, tipoFecha, fechaOperacion, fechaValidacionPagoR;
+        
+        SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoFecha = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaOperacion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaValidacionPagoR = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa506.setPatente(patente);
+                modGlosa506.setPedimento(pedimento);
+                modGlosa506.setSeccionAduanera(seccionAduanera);
+                modGlosa506.setTipoFecha(tipoFecha);
+                
+                Date parsed2 = dateFormatSQL.parse(fechaOperacion);
+                java.sql.Date fechaOperacionSQL = new java.sql.Date(parsed2.getTime());
+                modGlosa506.setFechaOperacion(fechaOperacionSQL);
+                
+                Date parsed3 = dateFormatSQL.parse(fechaValidacionPagoR);
+                java.sql.Date fechaValidacionPagoRSQL = new java.sql.Date(parsed3.getTime());
+                modGlosa506.setFechaValidacionPagoR(fechaValidacionPagoRSQL);
+                
+                modcGlosa506.registrar(modGlosa506);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa507(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, claveCaso, identificadorCaso, tipoPedimento, complementoCaso, fechaValidacionPagoR;
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                claveCaso = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                identificadorCaso = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoPedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                complementoCaso = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaValidacionPagoR = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                
+                    
+                modGlosa507.setPatente(patente);
+                modGlosa507.setPedimento(pedimento);
+                modGlosa507.setSeccionAduanera(seccionAduanera);
+                modGlosa507.setClaveCaso(claveCaso);
+                modGlosa507.setIdentificadorCaso(identificadorCaso);
+                modGlosa507.setTipoPedimento(tipoPedimento);
+                modGlosa507.setComplementoCaso(complementoCaso);
+                
+                Date parsed1 = dateFormatSQL.parse(fechaValidacionPagoR);
+                java.sql.Date fechaValidacionPagoRSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa507.setFechaValidacionPagoR(fechaValidacionPagoRSQL);
+                modcGlosa507.registrar(modGlosa507);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa508(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, institucionEmisora, numeroCuenta, folioConstancia,
+                    fechaConstancia, tipoCuenta, claveGarantia, totalGarantia, cantidadUnidades,
+                    titulosAsignados, fechaPagoReal;
+            Double valorUnitarioTitulo;
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                institucionEmisora = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                numeroCuenta = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                folioConstancia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaConstancia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoCuenta = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                claveGarantia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                valorUnitarioTitulo = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                totalGarantia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                cantidadUnidades = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                titulosAsignados = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaPagoReal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                
+                    
+                modGlosa508.setPatente(patente);
+                modGlosa508.setPedimento(pedimento);
+                modGlosa508.setSeccionAduanera(seccionAduanera);
+                modGlosa508.setInstitucionEmisora(institucionEmisora);
+                modGlosa508.setNumeroCuenta(numeroCuenta);
+                modGlosa508.setFolioConstancia(folioConstancia);
+                
+                Date parsed2 = dateFormatSQL.parse(fechaConstancia);
+                java.sql.Date fechaConstanciaSQL = new java.sql.Date(parsed2.getTime());
+                modGlosa508.setFechaPagoReal(fechaConstanciaSQL);
+                
+                modGlosa508.setTipoCuenta(tipoCuenta);
+                modGlosa508.setClaveGarantia(claveGarantia);
+                modGlosa508.setValorUnitarioTitulo(valorUnitarioTitulo);
+                modGlosa508.setTotalGarantia(totalGarantia);
+                modGlosa508.setCantidadUnidades(cantidadUnidades);
+                modGlosa508.setTitulosAsignados(titulosAsignados);
+                
+                Date parsed1 = dateFormatSQL.parse(fechaPagoReal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa508.setFechaPagoReal(fechaPagoRealSQL);
+                
+                
+                modcGlosa508.registrar(modGlosa508);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa509(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, claveContribucion, tasaContribucion, tipoTasa, tipoPedimento, fechaPagoReal;
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                claveContribucion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tasaContribucion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoTasa = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoPedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaPagoReal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                
+                
+                    
+                modGlosa509.setPatente(patente);
+                modGlosa509.setPedimento(pedimento);
+                modGlosa509.setSeccionAduanera(seccionAduanera);
+                modGlosa509.setClaveContribucion(claveContribucion);
+                modGlosa509.setTasaContribucion(tasaContribucion);
+                modGlosa509.setTipoTasa(tipoTasa);
+                modGlosa509.setTipoPedimento(tipoPedimento);
+                
+                Date parsed1 = dateFormatSQL.parse(fechaPagoReal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa509.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa509.registrar(modGlosa509);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa510(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, claveContribucion,formaPago, tipoPedimento, fechaPagoReal;
+            Double importePago;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                claveContribucion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                formaPago = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                importePago = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoPedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaPagoReal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                
+                    
+                modGlosa510.setPatente(patente);
+                modGlosa510.setPedimento(pedimento);
+                modGlosa510.setSeccionAduanera(seccionAduanera);
+                modGlosa510.setClaveContribucion(claveContribucion);
+                modGlosa510.setFormaPago(formaPago);
+                modGlosa510.setImportePago(importePago);
+                modGlosa510.setTipoPedimento(tipoPedimento);
+                
+                Date parsed1 = dateFormatSQL.parse(fechaPagoReal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa510.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa510.registrar(modGlosa510);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa511(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, secuenciaObservacion, observaciones, tipoPedimento, fechaValidacionPagoR;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                secuenciaObservacion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                observaciones = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoPedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaValidacionPagoR = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                
+                    
+                modGlosa511.setPatente(patente);
+                modGlosa511.setPedimento(pedimento);
+                modGlosa511.setSeccionAduanera(seccionAduanera);
+                modGlosa511.setSecuenciaObservacion(secuenciaObservacion);
+                modGlosa511.setObservaciones(observaciones);
+                modGlosa511.setTipoPedimento(tipoPedimento);
+                
+                Date parsed1 = dateFormatSQL.parse(fechaValidacionPagoR);
+                java.sql.Date fechaValidacionPagoRSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa511.setFechaValidacionPagoR(fechaValidacionPagoRSQL);
+                
+                modcGlosa511.registrar(modGlosa511);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa512(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, patenteAduanalOrig, pedimentoOriginal, seccionAduaneraDespOrig,
+                    documentoOriginal, fechaOperacionOrig, fraccionOriginal, unidadMedida, tipoPedimento, fechaPagoReal;
+            Double mercanciaDescargada;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                patenteAduanalOrig = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimentoOriginal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduaneraDespOrig = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                documentoOriginal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaOperacionOrig = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fraccionOriginal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                unidadMedida = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                mercanciaDescargada = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipoPedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaPagoReal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                
+                    
+                modGlosa512.setPatente(patente);
+                modGlosa512.setPedimento(pedimento);
+                modGlosa512.setSeccionAduanera(seccionAduanera);
+                modGlosa512.setPatenteAduanalOrig(patenteAduanalOrig);
+                modGlosa512.setPedimentoOriginal(pedimentoOriginal);
+                modGlosa512.setSeccionAduaneraDespOrig(seccionAduaneraDespOrig);
+                modGlosa512.setDocumentoOriginal(documentoOriginal);
+                Date parsed1 = dateFormatSQL.parse(fechaOperacionOrig);
+                java.sql.Date fechaOperacionOrigSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa512.setFechaOperacionOrig(fechaOperacionOrigSQL);
+                
+                modGlosa512.setFraccionOriginal(fraccionOriginal);
+                modGlosa512.setUnidadMedida(unidadMedida);
+                modGlosa512.setMercanciaDescargada(mercanciaDescargada);
+                modGlosa512.setTipoPedimento(tipoPedimento);
+                
+                Date parsed2 = dateFormatSQL.parse(fechaPagoReal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed2.getTime());
+                modGlosa512.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa512.registrar(modGlosa512);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa520(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, indentFiscalDestinatario, nombreDestinatarioMercancia,
+                    calleDestinatario, numInteriorDestinatario, numExteriorDestinatario, cpDestinatario,
+                    municpioDestinatario, paisDestinatario, fechaPagoReal;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                indentFiscalDestinatario = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                nombreDestinatarioMercancia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                calleDestinatario = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                numInteriorDestinatario = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                numExteriorDestinatario = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                cpDestinatario = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                municpioDestinatario = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                paisDestinatario = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaPagoReal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                
+                    
+                modGlosa520.setPatente(patente);
+                modGlosa520.setPedimento(pedimento);
+                modGlosa520.setSeccionAduanera(seccionAduanera);
+                modGlosa520.setIndentFiscalDestinatario(indentFiscalDestinatario);
+                modGlosa520.setNombreDestinatarioMercancia(nombreDestinatarioMercancia);
+                modGlosa520.setCalleDestinatario(calleDestinatario);
+                modGlosa520.setNumInteriorDestinatario(numInteriorDestinatario);
+                modGlosa520.setNumExteriorDestinatario(numExteriorDestinatario);
+                modGlosa520.setCpDestinatario(cpDestinatario);
+                modGlosa520.setMunicpioDestinatario(municpioDestinatario);
+                modGlosa520.setPaisDestinatario(paisDestinatario);
+                
+                Date parsed1 = dateFormatSQL.parse(fechaPagoReal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa520.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa520.registrar(modGlosa520);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa551(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, fraccion, secuenciaFraccion, subdivisionFraccion, descripcionMercancia,
+                    claveVinculacion, metodoValorizacion, codigoMercanciaProducto,
+                    marcaMercanciaProducto, modeloMercanciaProducto, paisOrigenDestino, paisCompradorVendedor, entidadFedOrigen, entidadFedDestino,
+                    entidadFedComprador, entidadFedVendedor, tipoOperacion, claveDocumento, fechaPagoReal;
+            Double precioUnitario, valorAduana, valorComercial, valorDolares, cantidadUMComercial, cantidadUMTarifa, valorAgregado;
+            int unidadMedidaComercial, unidadMedidaTarifa;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                secuenciaFraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                subdivisionFraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                descripcionMercancia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    precioUnitario = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    valorAduana = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    valorComercial = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    valorDolares = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    cantidadUMComercial = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    unidadMedidaComercial = Integer.parseInt((linea.substring(0, linea.indexOf('|'))));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    cantidadUMTarifa = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    unidadMedidaTarifa = Integer.parseInt(linea.substring(0, linea.indexOf('|')));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    valorAgregado = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    claveVinculacion = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    metodoValorizacion = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    codigoMercanciaProducto = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    marcaMercanciaProducto = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    modeloMercanciaProducto = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    paisOrigenDestino = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    paisCompradorVendedor = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    entidadFedOrigen = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    entidadFedDestino = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    entidadFedComprador = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    entidadFedVendedor = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    tipoOperacion = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    claveDocumento = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                    fechaPagoReal = linea.substring(0, linea.indexOf('|'));
+                    linea = linea.substring(linea.indexOf('|') + 1);
+                
+                    
+                modGlosa551.setPatente(patente);
+                modGlosa551.setPedimento(pedimento);
+                modGlosa551.setSeccionAduanera(seccionAduanera);
+                modGlosa551.setFraccion(fraccion);
+                modGlosa551.setSecuenciaFraccion(secuenciaFraccion);
+                modGlosa551.setSubdivisionFraccion(subdivisionFraccion);
+                modGlosa551.setDescripcionMercancia(descripcionMercancia);
+                modGlosa551.setPrecioUnitario(precioUnitario);
+                modGlosa551.setValorAduana(valorAduana);
+                modGlosa551.setValorComercial(valorComercial);
+                modGlosa551.setValorDolares(valorDolares);
+                modGlosa551.setCantidadUMComercial(cantidadUMComercial);
+                modGlosa551.setUnidadMedidaComercial(unidadMedidaComercial);
+                modGlosa551.setCantidadUMTarifa(cantidadUMTarifa);
+                modGlosa551.setUnidadMedidaTarifa(unidadMedidaTarifa);
+                modGlosa551.setValorAgregado(valorAgregado);
+                modGlosa551.setClaveVinculacion(claveVinculacion);
+                modGlosa551.setMetodoValorizacion(metodoValorizacion);
+                modGlosa551.setCodigoMercanciaProducto(codigoMercanciaProducto);
+                modGlosa551.setMarcaMercanciaProducto(marcaMercanciaProducto);
+                modGlosa551.setModeloMercanciaProducto(modeloMercanciaProducto);
+                modGlosa551.setPaisOrigenDestino(paisOrigenDestino);
+                modGlosa551.setPaisCompradorVendedor(paisCompradorVendedor);
+                modGlosa551.setEntidadFedOrigen(entidadFedOrigen);
+                modGlosa551.setEntidadFedDestino(entidadFedDestino);
+                modGlosa551.setEntidadFedComprador(entidadFedComprador);
+                modGlosa551.setEntidadFedVendedor(entidadFedVendedor);
+                modGlosa551.setTipoOperacion(tipoOperacion);
+                modGlosa551.setClaveDocumento(claveDocumento);
+                
+                Date parsed1 = dateFormatSQL.parse(fechaPagoReal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa551.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa551.registrar(modGlosa551);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa552(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, fraccion, secuenciafraccion, vinnumeroserie, fechapagoreal;
+            Double kilometrajevehiculo;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                secuenciafraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                vinnumeroserie = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                kilometrajevehiculo = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechapagoreal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa552.setPatente(patente);
+                modGlosa552.setPedimento(pedimento);
+                modGlosa552.setSeccionAduanera(seccionAduanera);
+                modGlosa552.setFraccion(fraccion);
+                modGlosa552.setSecuenciaFraccion(secuenciafraccion);
+                modGlosa552.setVinNumeroSerie(vinnumeroserie);
+                modGlosa552.setKilometrajeVehiculo(kilometrajevehiculo);
+                
+                Date parsed1 = dateFormatSQL.parse(fechapagoreal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa552.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa552.registrar(modGlosa552);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa553(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, fraccion, secuenciafraccion,clavepermiso,
+                    firmadescargo,numeropermiso,fechapagoreal;
+            Double valorcomercialdolares, cantidadmumtarifa;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                secuenciafraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                clavepermiso = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                firmadescargo = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                numeropermiso = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                valorcomercialdolares = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                if (linea.substring(0, linea.indexOf('|')).equals("")) {
+                    cantidadmumtarifa = 0.0;
+                }else{
+                    cantidadmumtarifa = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                }
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechapagoreal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                
+                modGlosa553.setPatente(patente);
+                modGlosa553.setPedimento(pedimento);
+                modGlosa553.setSeccionAduanera(seccionAduanera);
+                modGlosa553.setFraccion(fraccion);
+                modGlosa553.setSecuenciaFraccion(secuenciafraccion);
+                modGlosa553.setClavePermiso(clavepermiso);
+                modGlosa553.setFirmaDescargo(firmadescargo);
+                modGlosa553.setNumeroPermiso(numeropermiso);
+                modGlosa553.setValorComercialDolares(valorcomercialdolares);
+                modGlosa553.setCantidadMUMTarifa(cantidadmumtarifa);
+                
+                Date parsed1 = dateFormatSQL.parse(fechapagoreal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa553.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa553.registrar(modGlosa553);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa554(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionaduanera, fraccion, secuenciafraccion, clavecaso, 
+                    identificadorcaso, complementocaso, fechapagoreal;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionaduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                secuenciafraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                clavecaso = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                identificadorcaso = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                complementocaso = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechapagoreal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                
+                modGlosa554.setPatente(patente);
+                modGlosa554.setPedimento(pedimento);
+                modGlosa554.setSeccionAduanera(seccionaduanera);
+                modGlosa554.setFraccion(fraccion);
+                modGlosa554.setSecuenciaFraccion(secuenciafraccion);
+                modGlosa554.setClaveCaso(clavecaso);
+                modGlosa554.setIdentificadorCaso(identificadorcaso);
+                modGlosa554.setComplementoCaso(complementocaso);
+                
+                Date parsed1 = dateFormatSQL.parse(fechapagoreal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa554.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa554.registrar(modGlosa554);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa555(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionaduanera, fraccion, secuenciafraccion, institucionemisora, 
+                    numerocuenta, folioconstancia, fechaconstancia, clavegarantia, 
+                    totalgarantia, cantidadunidadesmedida, titulosasignados, fechapagoreal;
+            Double valorunitariotitulo;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionaduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                secuenciafraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                institucionemisora = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                numerocuenta = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                folioconstancia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaconstancia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                clavegarantia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                valorunitariotitulo = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                totalgarantia = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                cantidadunidadesmedida = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                titulosasignados = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechapagoreal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa555.setPatente(patente);
+                modGlosa555.setPedimento(pedimento);
+                modGlosa555.setSeccionAduanera(seccionaduanera);
+                modGlosa555.setFraccion(fraccion);
+                modGlosa555.setSecuenciaFraccion(secuenciafraccion);
+                modGlosa555.setInstitucionEmisora(institucionemisora);
+                modGlosa555.setNumeroCuenta(numerocuenta);
+                modGlosa555.setFolioConstancia(folioconstancia);
+                Date parsed2 = dateFormatSQL.parse(fechaconstancia);
+                java.sql.Date fechaconstanciaSQL = new java.sql.Date(parsed2.getTime());
+                modGlosa555.setFechaConstancia(fechaconstanciaSQL);
+                
+                modGlosa555.setClaveGarantia(clavegarantia);
+                modGlosa555.setValorUnitarioTitulo(valorunitariotitulo);
+                modGlosa555.setTotalGarantia(totalgarantia);
+                modGlosa555.setCantidadUnidadesMedida(cantidadunidadesmedida);
+                modGlosa555.setTitulosAsignados(titulosasignados);
+                
+                Date parsed1 = dateFormatSQL.parse(fechapagoreal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa555.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa555.registrar(modGlosa555);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa556(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionaduanera, fraccion, secuenciafraccion, 
+                    clavecontribucion, tipotasa, fechapagoreal;
+            double tasacontribucion;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionaduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                secuenciafraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                clavecontribucion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tasacontribucion = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipotasa = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechapagoreal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa556.setPatente(patente);
+                modGlosa556.setPedimento(pedimento);
+                modGlosa556.setSeccionAduanera(seccionaduanera);
+                modGlosa556.setFraccion(fraccion);
+                modGlosa556.setSecuenciaFraccion(secuenciafraccion);
+                modGlosa556.setClaveContribucion(clavecontribucion);
+                modGlosa556.setTasaContribucion(tasacontribucion);
+                modGlosa556.setTipoTasa(tipotasa);
+
+                
+                Date parsed1 = dateFormatSQL.parse(fechapagoreal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa556.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa556.registrar(modGlosa556);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa557(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionaduanera, fraccion, secuenciafraccion, clavecontribucion, formapago, fechavalidacionpagor;;
+            Double importpago;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionaduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                secuenciafraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                clavecontribucion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                formapago = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                importpago = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechavalidacionpagor = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa557.setPatente(patente);
+                modGlosa557.setPedimento(pedimento);
+                modGlosa557.setSeccionAduanera(seccionaduanera);
+                modGlosa557.setFraccion(fraccion);
+                modGlosa557.setSecuenciaFraccion(secuenciafraccion);
+                modGlosa557.setClaveContribucion(clavecontribucion);
+                modGlosa557.setFormaPago(formapago);
+                modGlosa557.setImportPago(importpago);
+                
+                Date parsed1 = dateFormatSQL.parse(fechavalidacionpagor);
+                java.sql.Date fechavalidacionpagorSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa557.setFechaValidacionPagoR(fechavalidacionpagorSQL);
+                
+                modcGlosa557.registrar(modGlosa557);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa558(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionaduanera, fraccion, secuenciafraccion, secuenciaobservacion, observaciones, fechapagoreal;
+            Double kilometrajevehiculo;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionaduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                secuenciafraccion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                secuenciaobservacion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                observaciones = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechapagoreal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa558.setPatente(patente);
+                modGlosa558.setPedimento(pedimento);
+                modGlosa558.setSeccionAduanera(seccionaduanera);
+                modGlosa558.setFraccion(fraccion);
+                modGlosa558.setSecuenciaFraccion(secuenciafraccion);
+                modGlosa558.setSecuenciaObservacion(secuenciaobservacion);
+                modGlosa558.setObservaciones(observaciones);
+                
+                Date parsed1 = dateFormatSQL.parse(fechapagoreal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa558.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa558.registrar(modGlosa558);
+            }
+        }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa701(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionaduanera, clavedocumento, fechapago, pedimentoanterior, patenteanterior, 
+                    seccionaduaneraanterior, documentoanterior, fechaoperacionanterior, pedimentooriginal, 
+                    patenteaduanalorig, seccionaduanaldesporig, fechapagoreal;
+            Double kilometrajevehiculo;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionaduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                clavedocumento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechapago = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimentoanterior = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                patenteanterior = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionaduaneraanterior = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                documentoanterior = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechaoperacionanterior = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimentooriginal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                patenteaduanalorig = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionaduanaldesporig = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechapagoreal = linea.substring(0, linea.indexOf('|'));
+                    
+                modGlosa701.setPatente(patente);
+                modGlosa701.setPedimento(pedimento);
+                modGlosa701.setSeccionAduanera(seccionaduanera);
+                modGlosa701.setClaveDocumento(clavedocumento);
+                Date parsed2 = dateFormatSQL.parse(fechapago);
+                java.sql.Date fechapagoSQL = new java.sql.Date(parsed2.getTime());
+                modGlosa701.setFechaPago(fechapagoSQL);
+                
+                modGlosa701.setPedimentoAnterior(pedimentoanterior);
+                modGlosa701.setPatenteAnterior(patenteanterior);
+                modGlosa701.setSeccionAduaneraAnterior(seccionaduaneraanterior);
+                modGlosa701.setDocumentoAnterior(documentoanterior);
+                Date parsed3 = dateFormatSQL.parse(fechaoperacionanterior);
+                java.sql.Date fechaoperacionanteriorSQL = new java.sql.Date(parsed3.getTime());
+                modGlosa701.setFechaOperacionAnterior(fechaoperacionanteriorSQL);
+                
+                modGlosa701.setPedimentoOriginal(pedimentooriginal);
+                modGlosa701.setPatenteAduanalOrig(patenteaduanalorig);
+                modGlosa701.setSeccionAduanalDespOrig(seccionaduanaldesporig);
+                Date parsed1 = dateFormatSQL.parse(fechapagoreal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa701.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa701.registrar(modGlosa701);
+            }
+        }
+        } catch (FileNotFoundException | ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void insertarGlosa702(File file) throws IOException{
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String linea = "";
+            String patente, pedimento, seccionAduanera, clavecontribucion, formapago, tipopedimento, fechapagoreal;
+            Double importepago;
+            
+            SimpleDateFormat dateFormatSQL = new SimpleDateFormat("yyyy-MM-dd");
+        
+        int n = 1;
+        
+        while (((linea = br.readLine()) != null)) {
+            if (n == 1) {
+                n++;
+            } else {
+                
+                patente = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                pedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                seccionAduanera = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                clavecontribucion = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                formapago = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                importepago = Double.parseDouble(linea.substring(0, linea.indexOf('|')));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                tipopedimento = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                fechapagoreal = linea.substring(0, linea.indexOf('|'));
+                linea = linea.substring(linea.indexOf('|') + 1);
+                    
+                modGlosa702.setPatente(patente);
+                modGlosa702.setPedimento(pedimento);
+                modGlosa702.setSeccionAduanera(seccionAduanera);
+                modGlosa702.setClaveContribucion(clavecontribucion);
+                modGlosa702.setFormaPago(formapago);
+                modGlosa702.setImportePago(importepago);
+                modGlosa702.setTipoPedimento(tipopedimento);
+
+                Date parsed1 = dateFormatSQL.parse(fechapagoreal);
+                java.sql.Date fechaPagoRealSQL = new java.sql.Date(parsed1.getTime());
+                modGlosa702.setFechaPagoReal(fechaPagoRealSQL);
+                
+                modcGlosa702.registrar(modGlosa702);
+            }
+        }
+        } catch (FileNotFoundException | ParseException ex) {
+            Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public String numeroMes(String mes){
+        String numMes = "";
+        
+        switch(mes){
+            case "Enero":
+                numMes = "01";
+                break;
+            case "Febrero":
+                numMes = "02";
+                break;
+            case "Marzo":
+                numMes = "03";
+                break;
+            case "Abril":
+                numMes = "04";
+                break;
+            case "Mayo":
+                numMes = "05";
+                break;
+            case "Junio":
+                numMes = "06";
+                break;
+            case "Julio":
+                numMes = "07";
+                break;
+            case "Agosto":
+                numMes = "08";
+                break;
+            case "Septiembre":
+                numMes = "09";
+                break;
+            case "Octubre":
+                numMes = "10";
+                break;
+            case "Noviembre":
+                numMes = "11";
+                break;
+            case "Diciembre":
+                numMes = "12";
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "No se encontro el mes");
+        }
+        return numMes;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent ev) {
         if (ev.getSource() == frmPrincipal.btnBuscarAdministrarGlosa) {
@@ -934,5 +2894,39 @@ public class CtrlAdministrar implements ActionListener {
             model = (DefaultTableModel) frmPrincipal.jtableAdministrarGlosa.getModel();
             exportarGlosaExcel(model);
         }
+        if (ev.getSource() == frmPrincipal.btnCargarComprimidoAdministrarGlosa) {
+            tipoCargaGlosa = 1;
+            frmPopUpInsertarGlosa.setVisible(true);
+            frmPopUpInsertarGlosa.setLocationRelativeTo(null);
+            frmPopUpInsertarGlosa.setResizable(false);
+            frmPopUpInsertarGlosa.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+            frmPrincipal.setEnabled(false);
+        }
+        if (ev.getSource() == frmPrincipal.btnCargarIndividualAdministrarGlosa) {
+            tipoCargaGlosa = 2;
+            frmPopUpInsertarGlosa.setVisible(true);
+            frmPopUpInsertarGlosa.setLocationRelativeTo(null);
+            frmPopUpInsertarGlosa.setResizable(false);
+            frmPopUpInsertarGlosa.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+            frmPrincipal.setEnabled(false);
+        }
+        
+        if (ev.getSource() == frmPopUpInsertarGlosa.btnAceptarPopUpInsertarGlosa) {
+            try {
+                if (tipoCargaGlosa == 1) {
+                    extraerZip();
+                }else{
+                    insertarGlosaIndividual();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(CtrlAdministrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (ev.getSource() == frmPopUpInsertarGlosa.btnCancelarpopInsertarGlosa) {
+            frmPopUpInsertarGlosa.setVisible(false);
+            frmPrincipal.setEnabled(true);
+            frmPrincipal.setVisible(true);
+        }
+        
     }
 }

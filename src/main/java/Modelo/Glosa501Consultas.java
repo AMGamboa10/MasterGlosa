@@ -56,8 +56,10 @@ public class Glosa501Consultas extends Conexion {
             ps.setDate(30, glosa501.getFechaRecepcionPedimento());
             ps.setDate(31, glosa501.getFechaPagoReal());
             ps.execute();
+            con.close();
             return true;
-
+            
+            
         } catch (SQLException ex) {
             Logger.getLogger(Glosa501Consultas.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ex, "Error SQL " + Glosa501Consultas.class.getName(), JOptionPane.ERROR_MESSAGE);

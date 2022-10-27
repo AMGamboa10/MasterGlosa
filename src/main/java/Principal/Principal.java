@@ -53,6 +53,7 @@ import Modelo.Glosa702Consultas;
 import Vista.PanelPrincipal;
 import Vista.PopUpAgregarConsultaSQL;
 import Vista.PopUpEliminar;
+import Vista.PopUpInsertarGlosaComprimido;
 
 public class Principal {
     
@@ -60,6 +61,7 @@ public class Principal {
         PanelPrincipal frmPrincipal = new PanelPrincipal();
         PopUpEliminar frmEliminar = new PopUpEliminar();
         PopUpAgregarConsultaSQL frmAgregarConsultaSQL = new PopUpAgregarConsultaSQL();
+        PopUpInsertarGlosaComprimido frmPopUpInsertarGlosa = new PopUpInsertarGlosaComprimido();
         Glosa501 modGlosa501 = new Glosa501();
         Glosa501Consultas modcGlosa501 = new Glosa501Consultas();
         Glosa502 modGlosa502 = new Glosa502();	
@@ -110,8 +112,8 @@ public class Principal {
 
         
         CtrlConsultasSQL ctrlConsultasSQL = new CtrlConsultasSQL(frmPrincipal, frmAgregarConsultaSQL);
-        CtrlFrame ctrlFrame = new CtrlFrame(frmPrincipal, frmEliminar, frmAgregarConsultaSQL);
-        CtrlAdministrar ctrlAdministrar = new CtrlAdministrar(frmPrincipal, modGlosa501, modcGlosa501, modGlosa502, modcGlosa502, modGlosa503, modcGlosa503, modGlosa504, modcGlosa504, modGlosa505, modcGlosa505, modGlosa506, modcGlosa506, modGlosa507, modcGlosa507, modGlosa508, modcGlosa508, modGlosa509, modcGlosa509, modGlosa510, modcGlosa510, modGlosa511, modcGlosa511, modGlosa512, modcGlosa512, modGlosa520, modcGlosa520, modGlosa551, modcGlosa551, modGlosa552, modcGlosa552, modGlosa553, modcGlosa553, modGlosa554, modcGlosa554, modGlosa555, modcGlosa555, modGlosa556, modcGlosa556, modGlosa557, modcGlosa557, modGlosa558, modcGlosa558, modGlosa701, modcGlosa701, modGlosa702, modcGlosa702, modcConsultas);
+        CtrlFrame ctrlFrame = new CtrlFrame(frmPrincipal, frmEliminar, frmAgregarConsultaSQL, frmPopUpInsertarGlosa);
+        CtrlAdministrar ctrlAdministrar = new CtrlAdministrar(frmPrincipal, frmPopUpInsertarGlosa, modGlosa501, modcGlosa501, modGlosa502, modcGlosa502, modGlosa503, modcGlosa503, modGlosa504, modcGlosa504, modGlosa505, modcGlosa505, modGlosa506, modcGlosa506, modGlosa507, modcGlosa507, modGlosa508, modcGlosa508, modGlosa509, modcGlosa509, modGlosa510, modcGlosa510, modGlosa511, modcGlosa511, modGlosa512, modcGlosa512, modGlosa520, modcGlosa520, modGlosa551, modcGlosa551, modGlosa552, modcGlosa552, modGlosa553, modcGlosa553, modGlosa554, modcGlosa554, modGlosa555, modcGlosa555, modGlosa556, modcGlosa556, modGlosa557, modcGlosa557, modGlosa558, modcGlosa558, modGlosa701, modcGlosa701, modGlosa702, modcGlosa702, modcConsultas);
         
         ctrlFrame.run();
         frmPrincipal.setVisible(true);

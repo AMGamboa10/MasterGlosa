@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 public class Glosa511Consultas extends Conexion {
 
     public boolean registrar(Glosa511 glosa511) {
-
+        
         PreparedStatement ps = null;
         Connection con = getConexion();
 
@@ -20,6 +20,7 @@ public class Glosa511Consultas extends Conexion {
                 + "Observaciones, TipoPedimento, FechaValidacionPagoR) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
         try {
+            
             ps = con.prepareStatement(sql);
             ps.setString(1, glosa511.getPatente());
             ps.setString(2, glosa511.getPedimento());
@@ -29,6 +30,7 @@ public class Glosa511Consultas extends Conexion {
             ps.setString(6, glosa511.getTipoPedimento());
             ps.setDate(7, glosa511.getFechaValidacionPagoR());
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {

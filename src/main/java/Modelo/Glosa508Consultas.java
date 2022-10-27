@@ -37,6 +37,7 @@ public class Glosa508Consultas extends Conexion {
             ps.setString(13, glosa508.getTitulosAsignados());
             ps.setDate(14, glosa508.getFechaPagoReal());
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {

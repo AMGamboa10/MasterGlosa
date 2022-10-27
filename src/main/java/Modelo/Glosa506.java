@@ -8,7 +8,7 @@ public class Glosa506 {
     private String Patente;
     private String Pedimento;
     private String SeccionAduanera;
-    private java.sql.Date TipoFecha;
+    private String TipoFecha;
     private java.sql.Date FechaOperacion;
     private java.sql.Date FechaValidacionPagoR;
     
@@ -17,7 +17,7 @@ public class Glosa506 {
     private int mes;
     private int año;
 
-    public Glosa506(int id, String Patente, String Pedimento, String SeccionAduanera, java.sql.Date TipoFecha, java.sql.Date FechaOperacion, java.sql.Date FechaValidacionPagoR) {
+    public Glosa506(int id, String Patente, String Pedimento, String SeccionAduanera, String TipoFecha, java.sql.Date FechaOperacion, java.sql.Date FechaValidacionPagoR) {
         this.id = id;
         this.Patente = Patente;
         this.Pedimento = Pedimento;
@@ -62,11 +62,11 @@ public class Glosa506 {
         this.SeccionAduanera = SeccionAduanera;
     }
 
-    public java.sql.Date getTipoFecha() {
+    public String getTipoFecha() {
         return TipoFecha;
     }
 
-    public void setTipoFecha(java.sql.Date TipoFecha) {
+    public void setTipoFecha(String TipoFecha) {
         this.TipoFecha = TipoFecha;
     }
 

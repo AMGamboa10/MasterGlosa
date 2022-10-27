@@ -30,6 +30,7 @@ public class Glosa502Consultas extends Conexion {
             ps.setString(8, glosa502.getIdentificadorTransporte());
             ps.setDate(9, glosa502.getFechaPagoReal());
             ps.execute();
+            con.close();
             return true;
             
         } catch (SQLException ex) {

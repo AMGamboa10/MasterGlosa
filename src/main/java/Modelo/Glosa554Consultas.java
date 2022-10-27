@@ -31,6 +31,7 @@ public class Glosa554Consultas extends Conexion {
             ps.setString(8, glosa554.getComplementoCaso());
             ps.setDate(9, glosa554.getFechaPagoReal());
             ps.execute();
+            con.close();
             return true;
 
         } catch (SQLException ex) {

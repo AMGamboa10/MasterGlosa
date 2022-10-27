@@ -11,7 +11,7 @@ public class Glosa556 {
     private String Fraccion;
     private String SecuenciaFraccion;
     private String ClaveContribucion;
-    private String TasaContribucion;
+    private double TasaContribucion;
     private String TipoTasa;
     private java.sql.Date FechaPagoReal;
     
@@ -20,7 +20,7 @@ public class Glosa556 {
     private int mes;
     private int año;
 
-    public Glosa556(int id, String Patente, String Pedimento, String SeccionAduanera, String Fraccion, String SecuenciaFraccion, String ClaveContribucion, String TasaContribucion, String TipoTasa, java.sql.Date FechaPagoReal) {
+    public Glosa556(int id, String Patente, String Pedimento, String SeccionAduanera, String Fraccion, String SecuenciaFraccion, String ClaveContribucion, double TasaContribucion, String TipoTasa, java.sql.Date FechaPagoReal) {
         this.id = id;
         this.Patente = Patente;
         this.Pedimento = Pedimento;
@@ -92,11 +92,11 @@ public class Glosa556 {
         this.ClaveContribucion = ClaveContribucion;
     }
 
-    public String getTasaContribucion() {
+    public double getTasaContribucion() {
         return TasaContribucion;
     }
 
-    public void setTasaContribucion(String TasaContribucion) {
+    public void setTasaContribucion(double TasaContribucion) {
         this.TasaContribucion = TasaContribucion;
     }
 
